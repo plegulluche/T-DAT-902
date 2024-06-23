@@ -132,6 +132,7 @@ Thumbs.db
 # dotenv environment variables files
 .env
 .env.*.local
+/csv
 
 # Others
 /config/*.json
