@@ -1,9 +1,27 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# Fonction pour vérifier si le message de commit contient [skip-tests]
+check_commit_message() {
+    commit_msg_file=$1
+    if [ -f "$commit_msg_file" ]; then
+        if grep -qi "\[skip-tests\]" "$commit_msg_file"; then
+            echo "Skipping tests due to [skip-tests] flag in commit message"
+            return 0
+        fi
+    fi
+    return 1
+}
+
+# Vérifier le message de commit
+if check_commit_message "$1"; then
+    exit 0
+fi
+
+# Vérifier les changements dans le dossier Api
 if git diff --cached --name-only | grep "^Api/"; then
-  echo "Changes detected in Api folder. Running lint and tests..."
-  cd Api && yarn lint && yarn test
+    echo "Changes detected in Api folder. Running lint and tests..."
+    cd Api && yarn lint:check && yarn test
 else
-  echo "No changes in Api folder. Skipping lint and tests."
+    echo "No changes in Api folder. Skipping lint and tests."
 fi
