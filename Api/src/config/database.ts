@@ -1,19 +1,24 @@
 import { MongoClient } from 'mongodb'
 import dotenv from 'dotenv'
 
-dotenv.config()
+if (process.env.NODE_ENV !== 'test') {
+  dotenv.config()
+}
 
-const url = `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@localhost:${process.env.MONGO_PORT}`
-console.log(url)
-const client = new MongoClient(url)
+const username = process.env.MONGO_INITDB_ROOT_USERNAME || 'defaultuser'
+const password = process.env.MONGO_INITDB_ROOT_PASSWORD || 'defaultpass'
+const port = process.env.MONGO_PORT || '27017'
+
+const url = `mongodb://${username}:${password}@localhost:${port}`
+console.log('url', url)
 
 export async function connectToDatabase() {
   try {
-    await client.connect()
+    const client = await MongoClient.connect(url)
     console.log('Connected successfully to MongoDB')
-    return client.db('yourdbname') // Remplacez 'yourdbname' par le nom de votre base de données
+    return client.db()
   } catch (error) {
     console.error('Could not connect to MongoDB', error)
-    process.exit(1)
+    throw error
   }
 }
