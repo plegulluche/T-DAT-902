@@ -4,8 +4,10 @@ import {
     RouterProvider,
     createBrowserRouter,
   } from "react-router-dom";
-import App from "./App";
+import App from "./pages/discover";
 import { HomeSimple, LogOut, Map, Settings, User } from "iconoir-react";
+import Onboarding from "./pages/onboarding";
+import MapPage from "./pages/map";
 
 function LeftMenu() {
   const location = useLocation();
@@ -46,7 +48,7 @@ function LeftMenu() {
             </div>
           </Link>
         </div>
-        <div className="flex gap-2 items-center w-full">
+        <div className="flex gap-2 items-center w-full pl-3">
           <LogOut width={20} height={20} className="text-red-500" />
           <p className="text-red-500">Log out</p>
         </div>
@@ -56,11 +58,11 @@ function LeftMenu() {
 
   function IndexLayout() {
     return (
-     <div className="w-full h-full bg-gray-100 flex">
+     <div className="w-full h-full bg-[#FFFBF0] flex">
         <div className="h-dvh p-3">
             <LeftMenu />
         </div>
-        <div className="flex-1 bg-gray-100 p-5">
+        <div className="flex-1 bg-[#FFFBF0] p-5">
           <Outlet />
         </div>
      </div>
@@ -82,10 +84,21 @@ function LeftMenu() {
           element: <App />,
         },
         {
+          index: true,
+          path: "/map",
+          breadcrumbName: "/map",
+          element: <MapPage />,
+        },
+        {
           path: "*",
           element: <></>,
         },
       ],
+    },
+    {
+      path: "/onboarding",
+      breadcrumbName: "/onboarding",
+      element: <Onboarding />,
     },
   ];
   
