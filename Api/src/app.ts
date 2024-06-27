@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import * as dotenv from 'dotenv'
-import { connectToDatabase } from './config/database'
+import { connectToDatabase } from './config/database_connector'
 
 dotenv.config()
 

@@ -1,5 +1,5 @@
 import { MongoClient } from 'mongodb'
-import { connectToDatabase } from '../config/database'
+import { connectToDatabase } from '../../config/database_connector'
 
 // Simulation du module mongodb pour les tests
 jest.mock('mongodb')
