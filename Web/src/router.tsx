@@ -1,23 +1,54 @@
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import {
-    Navigate,
+   Link,
     RouterProvider,
     createBrowserRouter,
   } from "react-router-dom";
 import App from "./App";
+import { HomeSimple, LogOut, Map, Settings, User } from "iconoir-react";
 
 function LeftMenu() {
-    return (
-      <div className="w-[240px] h-full">
-        <div className="w-full h-[56px] bg-surface-100 shadow z-20 relative">
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="text-lg font-bold">Left Menu</div>
+  const location = useLocation();
+
+  return (
+      <div className="w-[200px] h-full bg-black flex flex-col items-center justify-between py-10 drop-shadow-lg rounded-lg px-5">
+        <div className="flex flex-col gap-3 items-center">
+          <div className="w-24 h-24 rounded-full bg-white overflow-hidden">
+            <img src="/radu.png" className="w-full h-full" />
+          </div>
+          <div>
+            <p className="font-bold text-lg">Grosse guepe</p>
           </div>
         </div>
-        <div className="w-full h-[calc(100%-56px)] overflow-auto">
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="text-lg font-bold">Left Menu Content</div>
-          </div>
+        <div className="flex flex-col gap-5 mb-40 w-full">
+          <Link to="/">
+            <div className={`flex gap-3 items-center ${location.pathname === "/" ? "bg-gray-100/15" : "hover:bg-gray-100/15" } py-2 px-3 rounded hover:cursor-pointer`}>
+              <HomeSimple width={24} height={24} className={location.pathname === "/" ? "text-white" : "text-gray-200"} strokeWidth={2.5} />
+              <p className="font-semibold">Discover</p>
+            </div>
+          </Link>
+          <Link to="/map">
+            <div className={`flex gap-3 items-center ${location.pathname === "/map" ? "bg-gray-100/15" : "hover:bg-gray-100/15" } py-2 px-3 rounded hover:cursor-pointer`}>
+              <Map width={24} height={24} className={location.pathname === "/map" ? "text-white" : "text-gray-200"} strokeWidth={2.5} />
+              <p className="font-semibold">Map</p>
+            </div>
+          </Link>
+          <Link to="/profile">
+            <div className={`flex gap-3 items-center ${location.pathname === "/profile" ? "bg-gray-100/15" : "hover:bg-gray-100/15" } py-2 px-3 rounded hover:cursor-pointer`}>
+              <User width={24} height={24} className={location.pathname === "/profile" ? "text-white" : "text-gray-200"} strokeWidth={2.5} />
+              <p className="font-semibold">Profile</p>
+            </div>
+          </Link>
+          <Link to="/settings">
+            <div className={`flex gap-3 items-center ${location.pathname === "/settings" ? "bg-gray-100/15" : "hover:bg-gray-100/15" } py-2 px-3 rounded hover:cursor-pointer`}>
+              <Settings width={24} height={24} className={location.pathname === "/settings" ? "text-white" : "text-gray-200"} strokeWidth={2} />
+              <p className="font-semibold">Settings</p>
+            </div>
+          </Link>
+        </div>
+        <div className="flex gap-2 items-center w-full">
+          <LogOut width={20} height={20} className="text-red-500" />
+          <p className="text-red-500">Log out</p>
         </div>
       </div>
     );
@@ -25,18 +56,14 @@ function LeftMenu() {
 
   function IndexLayout() {
     return (
-      <div className="full xl:min-w-[1200px] relative">
-        <div className="flex h-full">
-          <div className="flex h-full bg-surface-900 text-onsurface-900">
+     <div className="w-full h-full bg-gray-100 flex">
+        <div className="h-dvh p-3">
             <LeftMenu />
-          </div>
-          <div className="full flex-1 overflow-hidden relative bg-surface-500">
-            <div className={`w-full h-[calc(100%-56px)] overflow-auto`}>
-              <Outlet />
-            </div>
-          </div>
         </div>
-      </div>
+        <div className="flex-1 bg-gray-100 p-5">
+          <Outlet />
+        </div>
+     </div>
     );
   }
 
