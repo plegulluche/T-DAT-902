@@ -1,70 +1,36 @@
+import { Coins, Group, MapPin } from "iconoir-react";
 import mapboxgl from "mapbox-gl";
 import { useEffect, useRef } from "react";
-import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
+import RecentSales from "./recentSales";
+import Chart from "./chart";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF0aGlldWJsYWlzIiwiYSI6ImNrZjZneDRmdDB3bG4yeHA5ZHN5NDNsYm0ifQ.0-ZZSb86hkNjwGqMJEiF2Q';
 
-const data = [
-  {
-    "name": "Page A",
-    "uv": 4000,
-    "pv": 2400,
-    "amt": 2400
-  },
-  {
-    "name": "Page B",
-    "uv": 3000,
-    "pv": 1398,
-    "amt": 2210
-  },
-  {
-    "name": "Page C",
-    "uv": 2000,
-    "pv": 9800,
-    "amt": 2290
-  },
-  {
-    "name": "Page D",
-    "uv": 2780,
-    "pv": 3908,
-    "amt": 2000
-  },
-  {
-    "name": "Page E",
-    "uv": 1890,
-    "pv": 4800,
-    "amt": 2181
-  },
-  {
-    "name": "Page F",
-    "uv": 2390,
-    "pv": 3800,
-    "amt": 2500
-  },
-  {
-    "name": "Page G",
-    "uv": 3490,
-    "pv": 4300,
-    "amt": 2100
-  }
-]
+function Header() {
+  const department = localStorage.getItem('departement');
+  const budget = localStorage.getItem('budget');
+  const household = localStorage.getItem('household');
 
-function Chart() {
   return (
-    <AreaChart width={370} height={210} data={data}
-    margin={{ top: 20, right: 10, left: -30, bottom: 0 }}>
-    <defs>
-      <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="5%" stopColor="#060512" stopOpacity={0.8}/>
-        <stop offset="95%" stopColor="#060512" stopOpacity={0}/>
-      </linearGradient>
-    </defs>
-    <XAxis dataKey="name" fontSize={10} color="#BFBFBF" opacity={0.5} tickSize={1}/>
-    <YAxis fontSize={8} tickSize={2} opacity={0.5}/>
-    <CartesianGrid strokeDasharray="1 1" color="#BFBFBF" />
-    <Tooltip />
-    <Area type="monotone" dataKey="uv" stroke="#060512" fillOpacity={1} fill="url(#colorUv)" />
-  </AreaChart>
+    <div className="h-10 mb-4 flex items-center gap-10">
+        <p className="text-black font-semibold text-xl">Interactiv Map</p>
+        <div className="text-black/50 flex gap-5 items-center">
+          <div className="h-full py-1 px-3 rounded border border-gray-300 flex gap-2 items-center">
+            <Group width={16} height={16} strokeWidth={2} />
+            <p className="text-sm">{household}</p>
+          </div>
+
+          <div className="h-full py-1 px-3 rounded border border-gray-300 flex gap-2 items-center">
+            <Coins width={16} height={16} strokeWidth={2} />
+            <p className="text-sm">{budget}</p>
+          </div>
+
+          <div className="h-full py-1 px-3 rounded border border-gray-300 flex gap-2 items-center">
+            <MapPin width={16} height={16} strokeWidth={2} />
+            <p className="text-sm">{department}</p>
+          </div>
+        </div>
+    </div>
   )
 }
 
@@ -170,18 +136,17 @@ const Map: React.FC = () => {
   return (
     <div>
       <div className="bg-white rounded-lg p-5 flex flex-col border-2 border-gray-200" style={{height: '95dvh'}}>
-        <div className="h-10 mb-4">
-          <p className="text-black font-semibold text-xl">Interactiv map research</p>
-        </div>
+        <Header />
         <div className="h-full flex gap-6 overflow-hidden">
           <div ref={mapContainerRef} className="rounded-md border-2 border-gray-200 overflow-hidden w-2/3" style={{  height: '100%' }}/>
-          <div className="w-1/3 rounded-lg flex flex-col justify-between gap-5">
+          <div className="w-1/3 rounded-lg flex flex-col gap-5">
             <div className="h-60 border-2 border-gray-200 rounded-md overflow-hidden w-full p-3">
               <p className="text-black/80 font-semibold text-sm">Price evolution</p>
               <Chart />
             </div>
-            <div className="h-1/3 bg-gray-100 rounded-lg">
-
+            <div className="h-84 border-2 border-gray-200 rounded-md overflow-hidden w-full p-3">
+            <p className="text-black/80 font-semibold text-sm">Recent sales</p>
+              <RecentSales />
             </div>
           </div>
         </div>
