@@ -1,4 +1,5 @@
 import { ArrowRight } from "iconoir-react";
+import { useState } from "react";
 
 const dpt = [
     {
@@ -508,9 +509,9 @@ const dpt = [
     }
 ]
 
-function CountCard(props: { count: string, label: string, onClick: () => void}) {
+function CountCard(props: { count: string, label: string, onClick: (e:string) => void, selected: string}) {
     return (
-        <div onClick={() => props.onClick()} className="w-28 h-20 px-1 border-2 border-black/80 rounded-lg flex flex-col items-center justify-center hover:bg-black/10 hover:cursor-pointer shadow">
+        <div onClick={() => props.onClick(props.count)} className={`select-none w-28 h-20 px-1 border-2 border-black/80 rounded-lg flex flex-col items-center justify-center ${props.selected === props.count && "bg-black/10"} hover:bg-black/10 hover:cursor-pointer shadow`}>
             <p className="text-lg text-black font-bold">{props.count}</p>
             <p className="text-xs text-black font-bold text-center">{props.label}</p>
         </div>
@@ -522,6 +523,12 @@ export default function Step3({
 }: {
   onValidateStep: () => void;
 }) {
+    const [selected, setSelected] = useState<string>("");
+
+    const onSelect = (count: string) => { 
+      setSelected(count);
+      localStorage.setItem("departement", count);
+    }
 
   return (
     <div className="xl:w-3/4 w-full h-full flex flex-col justify-center px-10">
@@ -529,7 +536,7 @@ export default function Step3({
         <div className=" padding">
           <section className="flex flex-wrap gap-4 max-h-[300px] overflow-y-auto">
             {dpt.map((d) => 
-                <CountCard count={d.code} label={d.dep_name} onClick={() => onValidateStep()} />
+                <CountCard count={d.code} label={d.dep_name} onClick={(e) => onSelect(e)} selected={selected}/>
             )}
           </section>
         </div>

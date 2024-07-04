@@ -5,11 +5,12 @@ import {
     createBrowserRouter,
   } from "react-router-dom";
 import App from "./pages/discover";
-import { HomeSimple, LogOut, Map, Settings, User } from "iconoir-react";
+import { HomeSimple, LogOut, Map, Settings } from "iconoir-react";
 import Onboarding from "./pages/onboarding";
 import MapPage from "./pages/map";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
+import SettingsPage from "./pages/settings.page";
 
 function LeftMenu() {
   const location = useLocation();
@@ -21,7 +22,7 @@ function LeftMenu() {
             <img src="/radu.png" className="w-full h-full" />
           </div>
           <div>
-            <p className="font-bold text-lg">Grosse guepe</p>
+            <p className="font-bold text-lg">Jean Dupont</p>
           </div>
         </div>
         <div className="flex flex-col gap-5 mb-40 w-full">
@@ -35,12 +36,6 @@ function LeftMenu() {
             <div className={`flex gap-3 items-center ${location.pathname === "/map" ? "bg-gray-100/15" : "hover:bg-gray-100/15" } py-2 px-3 rounded hover:cursor-pointer`}>
               <Map width={24} height={24} className={location.pathname === "/map" ? "text-white" : "text-gray-200"} strokeWidth={2.5} />
               <p className="font-semibold">Map</p>
-            </div>
-          </Link>
-          <Link to="/profile">
-            <div className={`flex gap-3 items-center ${location.pathname === "/profile" ? "bg-gray-100/15" : "hover:bg-gray-100/15" } py-2 px-3 rounded hover:cursor-pointer`}>
-              <User width={24} height={24} className={location.pathname === "/profile" ? "text-white" : "text-gray-200"} strokeWidth={2.5} />
-              <p className="font-semibold">Profile</p>
             </div>
           </Link>
           <Link to="/settings">
@@ -86,22 +81,14 @@ function LeftMenu() {
           element: <App />,
         },
         {
-          index: true,
           path: "/map",
           breadcrumbName: "/map",
           element: <MapPage />,
         },
         {
-          index: true,
-          path: "/login",
-          breadcrumbName: "/login",
-          element: <LoginPage />,
-        },
-        {
-          index: true,
-          path: "/register",
-          breadcrumbName: "/register",
-          element: <RegisterPage />,
+          path: "/settings",
+          breadcrumbName: "/settings",
+          element: <SettingsPage />,
         },
         {
           path: "*",
@@ -113,6 +100,18 @@ function LeftMenu() {
       path: "/onboarding",
       breadcrumbName: "/onboarding",
       element: <Onboarding />,
+    },
+    {
+      index: true,
+      path: "/login",
+      breadcrumbName: "/login",
+      element: <LoginPage />,
+    },
+    {
+      index: true,
+      path: "/register",
+      breadcrumbName: "/register",
+      element: <RegisterPage />,
     },
   ];
   
