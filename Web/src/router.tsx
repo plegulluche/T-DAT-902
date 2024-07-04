@@ -8,6 +8,8 @@ import App from "./pages/discover";
 import { HomeSimple, LogOut, Map, Settings, User } from "iconoir-react";
 import Onboarding from "./pages/onboarding";
 import MapPage from "./pages/map";
+import LoginPage from "./pages/login";
+import RegisterPage from "./pages/register";
 
 function LeftMenu() {
   const location = useLocation();
@@ -88,6 +90,18 @@ function LeftMenu() {
           path: "/map",
           breadcrumbName: "/map",
           element: <MapPage />,
+        },
+        {
+          index: true,
+          path: "/login",
+          breadcrumbName: "/login",
+          element: <LoginPage />,
+        },
+        {
+          index: true,
+          path: "/register",
+          breadcrumbName: "/register",
+          element: <RegisterPage />,
         },
         {
           path: "*",
