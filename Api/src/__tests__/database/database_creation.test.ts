@@ -2,44 +2,67 @@ import { MongoClient } from 'mongodb'
 import { initializeDatabase } from '../../config/database_init'
 
 describe('Database Initialization', () => {
-  let client: MongoClient
+  let client: MongoClient | null = null
 
   beforeAll(async () => {
-    // Connexion à la base de données avant tous les tests
-    const url = `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@localhost:${process.env.MONGO_PORT}`
-    client = await MongoClient.connect(url)
+    const url = 'mongodb://testuser:testpass@localhost:27017'
+    try {
+      client = await MongoClient.connect(url)
+    } catch (error) {
+      console.error('Failed to connect to MongoDB:', error)
+    }
   })
 
   afterAll(async () => {
-    // Fermeture de la connexion après tous les tests
-    await client.close()
+    if (client) {
+      await client.close()
+    }
+  })
+
+  beforeEach(async () => {
+    if (client) {
+      try {
+        await client.db('mongo_t_dat_902').dropDatabase()
+      } catch (error) {
+        console.error('Error dropping database:', error)
+      }
+    }
   })
 
   it('should create the database if it does not exist', async () => {
-    const dbName = 'mongo_t_dat_902'
+    expect(client).not.toBeNull()
+    if (!client) {
+      throw new Error('MongoDB client is not initialized')
+    }
 
-    // Appel de la fonction à tester
-    await initializeDatabase()
+    const result = await initializeDatabase()
+    expect(result).toBe('Database created successfully')
 
-    // Vérification que la base de données a été créée
     const dbList = await client.db().admin().listDatabases()
-    const dbExists = dbList.databases.some(db => db.name === dbName)
+    const dbExists = dbList.databases.some(db => db.name === 'mongo_t_dat_902')
     expect(dbExists).toBe(true)
-
-    // Vérification que la base de données est accessible
-    const db = client.db(dbName)
-    expect(db).toBeDefined()
-
-    // Optionnel : vérification de la création d'une collection test
-    const collections = await db.listCollections().toArray()
-    const testCollectionExists = collections.some(
-      col => col.name === 'test_collection'
-    )
-    expect(testCollectionExists).toBe(true)
   })
 
-  it('should not throw an error if the database already exists', async () => {
-    // Appel de la fonction à tester une seconde fois
-    await expect(initializeDatabase()).resolves.not.toThrow()
+  it('should return a message if the database already exists', async () => {
+    expect(client).not.toBeNull()
+    if (!client) {
+      throw new Error('MongoDB client is not initialized')
+    }
+
+    await initializeDatabase()
+    const result = await initializeDatabase()
+    expect(result).toBe('Database already exists')
+  })
+
+  it('should not create any collections in the database', async () => {
+    expect(client).not.toBeNull()
+    if (!client) {
+      throw new Error('MongoDB client is not initialized')
+    }
+
+    await initializeDatabase()
+    const db = client.db('mongo_t_dat_902')
+    const collections = await db.listCollections().toArray()
+    expect(collections.length).toBe(0)
   })
 })

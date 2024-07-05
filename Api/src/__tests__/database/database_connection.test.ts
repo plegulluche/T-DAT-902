@@ -1,6 +1,8 @@
 import { MongoClient } from 'mongodb'
 import { connectToDatabase } from '../../config/database_connector'
 
+process.env.NODE_ENV = 'test'
+
 // Simulation du module mongodb pour les tests
 jest.mock('mongodb')
 

@@ -3,6 +3,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import * as dotenv from 'dotenv'
 import { connectToDatabase } from './config/database_connector'
+import { initializeDatabase } from './config/database_init'
 
 dotenv.config()
 
@@ -22,6 +23,15 @@ app.get('/', (req, res) => {
 connectToDatabase()
   .then(() => {
     console.log('Database connected')
+  })
+  .catch(error => {
+    console.error('Database connection failed', error)
+    process.exit(1)
+  })
+// Creation de la database
+initializeDatabase()
+  .then(() => {
+    console.log('Database created')
   })
   .catch(error => {
     console.error('Database connection failed', error)
