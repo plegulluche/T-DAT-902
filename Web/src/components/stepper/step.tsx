@@ -6,14 +6,12 @@ export default function Step({
     active = false,
     label,
     textSize,
-    onboarding = false,
   }: {
     type: number;
     checked?: boolean;
     active?: boolean;
     label: string;
     textSize?: string;
-    onboarding?: boolean;
   }) {
     return (
       <div

@@ -6,7 +6,6 @@ export default function StepperHeader({
     skip,
     labels,
     textSize,
-    onboarding,
   }: {
     step: number;
     skip?: () => void;
@@ -27,7 +26,6 @@ export default function StepperHeader({
                   checked={step > index}
                   label={label}
                   textSize={textSize}
-                  onboarding={onboarding}
                 />
                 {index < labels.length - 1 && (
                   <div className="text-black w-[35px] h-[5px] rounded bg-surface" />
