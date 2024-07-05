@@ -2,3 +2,5 @@
 .env.test
 huskydocs.txt
 node_modules/
+postgres_data
+mongodb_data

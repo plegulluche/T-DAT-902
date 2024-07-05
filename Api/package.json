@@ -9,6 +9,8 @@
   "scripts": {
     "prepare": "cd .. && husky install",
     "test": "DOTENV_CONFIG_PATH=.env.test jest --setupFiles=dotenv/config",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
     "dev": "nodemon src/app.ts",
     "build": "tsc",
     "start": "node dist/app.js",
