@@ -8,14 +8,17 @@
   },
   "scripts": {
     "prepare": "cd .. && husky install",
-    "test": "jest",
+    "test": "DOTENV_CONFIG_PATH=.env.test jest --setupFiles=dotenv/config",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
     "dev": "nodemon src/app.ts",
     "build": "tsc",
     "start": "node dist/app.js",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint . --fix",
     "lint:check": "eslint .",
-    "lint:fix": "eslint . --ext .ts --fix"
+    "lint:fix": "eslint . --ext .ts --fix",
+    "explore": "ts-node src/utils/describe_csv.ts"
   },
   "lint-staged": {
     "*.ts": [
@@ -27,20 +30,30 @@
   "author": "Pierre Le gulluche",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.16.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "helmet": "^7.1.0",
-    "nodemon": "^3.1.4"
+    "mongodb": "^6.7.0",
+    "nodemon": "^3.1.4",
+    "prisma": "^5.16.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@jest-mock/express": "^2.1.0",
+    "@jest/globals": "^29.7.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.8",
     "@types/supertest": "^6.0.2",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.6",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
+    "csv-parser": "^3.0.0",
     "eslint": "^9.5.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
