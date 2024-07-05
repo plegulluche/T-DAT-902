@@ -5,12 +5,13 @@ import {
     createBrowserRouter,
   } from "react-router-dom";
 import App from "./pages/discover";
-import { HomeSimple, LogOut, Map, Settings } from "iconoir-react";
+import { ArrowUnion, HomeSimple, LogOut, Map, Settings } from "iconoir-react";
 import Onboarding from "./pages/onboarding";
 import MapPage from "./pages/map";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import SettingsPage from "./pages/settings.page";
+import ComparePage from "./pages/compare";
 
 function LeftMenu() {
   const location = useLocation();
@@ -36,6 +37,12 @@ function LeftMenu() {
             <div className={`flex gap-3 items-center ${location.pathname === "/map" ? "bg-gray-100/15" : "hover:bg-gray-100/15" } py-2 px-3 rounded hover:cursor-pointer`}>
               <Map width={24} height={24} className={location.pathname === "/map" ? "text-white" : "text-gray-200"} strokeWidth={2.5} />
               <p className="font-semibold">Map</p>
+            </div>
+          </Link>
+          <Link to="/compare">
+            <div className={`flex gap-3 items-center ${location.pathname === "/compare" ? "bg-gray-100/15" : "hover:bg-gray-100/15" } py-2 px-3 rounded hover:cursor-pointer`}>
+              <ArrowUnion width={24} height={24} className={location.pathname === "/compare" ? "text-white" : "text-gray-200"} strokeWidth={2.5} />
+              <p className="font-semibold">Compare</p>
             </div>
           </Link>
           <Link to="/settings">
@@ -89,6 +96,11 @@ function LeftMenu() {
           path: "/settings",
           breadcrumbName: "/settings",
           element: <SettingsPage />,
+        },
+        {
+          path: "/compare",
+          breadcrumbName: "/compare",
+          element: <ComparePage />
         },
         {
           path: "*",
