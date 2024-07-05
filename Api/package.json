@@ -37,7 +37,9 @@
     "helmet": "^7.1.0",
     "mongodb": "^6.7.0",
     "nodemon": "^3.1.4",
-    "prisma": "^5.16.1"
+    "prisma": "^5.16.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@jest-mock/express": "^2.1.0",
@@ -47,6 +49,8 @@
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.8",
     "@types/supertest": "^6.0.2",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.6",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
     "csv-parser": "^3.0.0",
