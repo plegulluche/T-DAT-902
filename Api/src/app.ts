@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import * as dotenv from 'dotenv'
+import swaggerUi from 'swagger-ui-express'
+import swaggerSpec from './config/swagger'
 import { PrismaClient } from '@prisma/client'
 import userRoutes from './routes/user.routes'
 
@@ -14,7 +16,10 @@ app.use(cors())
 app.use(helmet())
 app.use(express.json())
 
-// ROUTES
+// ROUTES SWAGGER
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+
+// ROUTES API
 app.use('/api/users', userRoutes)
 
 // Gracefully shuting down Prisma connection

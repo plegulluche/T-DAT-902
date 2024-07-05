@@ -10,14 +10,19 @@ export class UserController {
 
   async createUser(req: Request, res: Response): Promise<void> {
     try {
+      console.log("Création d'utilisateur - Données reçues:", req.body)
       const { firebase_id, email } = req.body
       if (!firebase_id || !email) {
+        console.log('Données manquantes')
         res.status(400).json({ error: 'Firebase ID and email are required' })
         return
       }
+      console.log("Appel du service pour créer l'utilisateur")
       const newUser = await this.userService.createUser(firebase_id, email)
+      console.log('Utilisateur créé:', newUser)
       res.status(201).json(newUser)
     } catch (error) {
+      console.error("Erreur lors de la création de l'utilisateur:", error)
       res.status(500).json({ error: 'Internal server error' })
     }
   }
