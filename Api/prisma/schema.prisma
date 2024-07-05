@@ -20,3 +20,16 @@ model User {
   name        String?
   firstname   String?
 }
+
+model RealEstateTransaction {
+  id                Int      @id @default(autoincrement())
+  dateMutation      DateTime
+  natureMutation    String
+  valeurFonciere    Float
+  codePostal        String
+  codeCommune       String
+  codeDepartement   String
+  typeBien          String
+  surfaceReelleBati Float?
+  nombrePieces      Int?
+}
