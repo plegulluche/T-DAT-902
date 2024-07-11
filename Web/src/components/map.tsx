@@ -1,6 +1,6 @@
 import { Coins, Group, MapPin } from "iconoir-react";
 import mapboxgl from "mapbox-gl";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import RecentSales from "./recentSales";
 import Chart from "./chart";
 // import axios from "axios";
@@ -37,6 +37,10 @@ function Header() {
 
 const Map: React.FC = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
+  const [hoveredDepartment, setHoveredDepartment] = useState<string | null>(null);
+  const [hoveredCity, setHoveredCity] = useState<string | null>(null);
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState<string | null>(null);
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
   useEffect(() => {
     // axios.get('http://localhost:3000/api/users/id').then((response) => {
@@ -104,7 +108,6 @@ const Map: React.FC = () => {
             'fill-color': '#7EAEEA',
             'fill-opacity': 0.2
           },
-          minzoom: 5.5,
           maxzoom: 8
         });
        
@@ -118,11 +121,10 @@ const Map: React.FC = () => {
             'line-color': '#1E5F8E',
             'line-width': 3
           },
-          minzoom: 5.5,
           
         });
 
-        map.addLayer({
+       /* map.addLayer({
           id: 'region-borders',
           type: 'line',
           source: 'regions',
@@ -133,6 +135,100 @@ const Map: React.FC = () => {
           },
           minzoom: 3,
           maxzoom: 5.5
+        });*/
+
+        map.addLayer({
+          id: 'departements-hover',
+          type: 'fill',
+          source: 'departements',
+          layout: {},
+          paint: {
+            'fill-color': '#FF5733',
+            'fill-opacity': 0.5
+          },
+          filter: ['==', 'code', ''],
+          maxzoom: 8
+        });
+
+        map.addLayer({
+          id: 'city-hover',
+          type: 'fill',
+          source: 'villes',
+          layout: {},
+          paint: {
+            'fill-color': '#FF5733',
+            'fill-opacity': 0.5
+          },
+          filter: ['==', 'id', ''],
+          minzoom: 8
+        });
+
+        map.addLayer({
+          id: 'city-selected',
+          type: 'fill',
+          source: 'villes',
+          layout: {},
+          paint: {
+            'fill-color': '#FFC300',
+            'fill-opacity': 0.5
+          },
+          filter: ['==', 'id', ''],
+          minzoom: 8
+        });
+
+        map.on('mousemove', 'departements-layer', (e) => {
+          if (e.features && e.features.length > 0) {
+            const hoveredFeature = e.features[0];
+            setHoveredDepartment(hoveredFeature.properties?.code as string);
+            map.setFilter('departements-hover', ['==', 'code', hoveredFeature.properties?.code as string]);
+          }
+        });
+
+        map.on('mousemove', 'ville-layer', (e) => {
+          if (e.features && e.features.length > 0) {
+            const hoveredFeature = e.features[0];
+            setHoveredCity(hoveredFeature.properties?.com_code as string);
+            map.setFilter('city-hover', ['==', 'com_siren_code', hoveredFeature.properties?.com_siren_code as string]);
+          }
+        });
+
+        map.addLayer({
+          id: 'departements-selected',
+          type: 'fill',
+          source: 'departements',
+          layout: {},
+          paint: {
+            'fill-color': '#FFC300',
+            'fill-opacity': 0.5
+          },
+          filter: ['==', 'id', ''],
+          maxzoom: 8
+        });
+  
+        map.on('mouseleave', 'departements-layer', () => {
+          setHoveredDepartment(null);
+          map.setFilter('departements-hover', ['==', 'code', '']);
+        });
+
+        map.on('mouseleave', 'ville-layer', () => {
+          setHoveredCity(null);
+          map.setFilter('city-hover', ['==', 'com_siren_code', '']);
+        });
+
+        map.on('click', 'departements-layer', (e) => {
+          if (e.features && e.features.length > 0) {
+            const clickedFeature = e.features[0];
+            setSelectedDepartmentId(clickedFeature.properties?.code as string);
+            map.setFilter('departements-selected', ['==', 'code', clickedFeature.properties?.code as string]);
+          }
+        });
+
+        map.on('click', 'ville-layer', (e) => {
+          if (e.features && e.features.length > 0) {
+            const clickedFeature = e.features[0];
+            setSelectedCity(clickedFeature.properties?.com_code as string);
+            map.setFilter('city-selected', ['==', 'com_siren_code', clickedFeature.properties?.com_siren_code as string]);
+          }
         });
 
       });
