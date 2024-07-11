@@ -11,7 +11,11 @@ const Login: React.FC = () => {
 
     const handleEmailLogin = async () => {
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+                const user = userCredential.user;
+                console.log('uid', user.uid);
+                console.log('email', user.email);
+            });
             console.log('Logged in successfully!');
             navigate('/');
         } catch (error) {

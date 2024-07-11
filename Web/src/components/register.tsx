@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '../firebaseConfig';
 import { useNavigate } from 'react-router';
+import axios from 'axios';
 
 const Register: React.FC = () => {
     const [email, setEmail] = useState<string>('');
@@ -10,13 +11,24 @@ const Register: React.FC = () => {
     const navigate = useNavigate()
 
     const handleRegister = async () => {
-        alert('Registering...');
         if (password !== confirmPassword) {
             alert('Passwords do not match!');
             return;
         }
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            await createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user.uid);
+                axios.post('http://localhost:3000/api/users', {
+                    uid: user.uid,
+                    email: user.email,
+                }).then((response) => {
+                    console.log(response.data);
+                }).catch((error) => {
+                    console.error('Error registering:', error);
+                    alert((error as Error).message);
+                });
+            });
             console.log('Registered successfully!');
             navigate('/');
         } catch (error) {

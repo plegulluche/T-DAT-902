@@ -3,6 +3,7 @@ import mapboxgl from "mapbox-gl";
 import { useEffect, useRef } from "react";
 import RecentSales from "./recentSales";
 import Chart from "./chart";
+// import axios from "axios";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF0aGlldWJsYWlzIiwiYSI6ImNrZjZneDRmdDB3bG4yeHA5ZHN5NDNsYm0ifQ.0-ZZSb86hkNjwGqMJEiF2Q';
 
@@ -38,6 +39,13 @@ const Map: React.FC = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // axios.get('http://localhost:3000/api/users/id').then((response) => {
+    //   console.log(response.data);
+    // }
+    // ).catch((error) => {
+    //   console.error('Error fetching properties:', error);
+    //   alert((error as Error).message);
+    // });
     if (mapContainerRef.current) {
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
