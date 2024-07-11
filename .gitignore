@@ -138,3 +138,5 @@ Thumbs.db
 /config/*.json
 /config/*.yml
 /config/*.yaml
+
+/node_modules
