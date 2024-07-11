@@ -20,17 +20,17 @@ const Register: React.FC = () => {
                 const user = userCredential.user;
                 console.log(user.uid);
                 axios.post('http://localhost:3000/api/users', {
-                    uid: user.uid,
+                    firebase_id: user.uid,
                     email: user.email,
                 }).then((response) => {
                     console.log(response.data);
+                    console.log('Registered successfully!');
+                    navigate('/');
                 }).catch((error) => {
                     console.error('Error registering:', error);
                     alert((error as Error).message);
                 });
             });
-            console.log('Registered successfully!');
-            navigate('/');
         } catch (error) {
             console.error('Error registering:', error);
             alert((error as Error).message);
