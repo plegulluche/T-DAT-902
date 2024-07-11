@@ -39,7 +39,7 @@ const Map: React.FC = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [hoveredDepartment, setHoveredDepartment] = useState<string | null>(null);
   const [hoveredCity, setHoveredCity] = useState<string | null>(null);
-  const [selectedDepartmentId, setSelectedDepartmentId] = useState<string | null>(null);
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState<string | null>(localStorage.getItem('departement'));
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
   useEffect(() => {
@@ -230,6 +230,7 @@ const Map: React.FC = () => {
             map.setFilter('city-selected', ['==', 'com_siren_code', clickedFeature.properties?.com_siren_code as string]);
           }
         });
+        map.setFilter('departements-selected', ['==', 'code', localStorage.getItem('departement')]);
 
       });
 
