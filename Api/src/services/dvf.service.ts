@@ -74,3 +74,52 @@ export const getDvfData = async (
     lastSales
   }
 }
+
+export const getCityOrDepartmentStats = async (
+  location: string
+): Promise<{ monthlyStats: any[] }> => {
+  const startDate = startOfYear(new Date(2022, 0, 1)) // 1er janvier 2022
+  const endDate = endOfYear(new Date(2023, 0, 1)) // 31 décembre 2023
+
+  const isPostalCode = /^\d+$/.test(location)
+
+  let stats
+  if (isPostalCode) {
+    stats = await prisma.$queryRaw`
+        SELECT
+          DATE_TRUNC('month', date_mutation) AS month,
+          AVG(valeur_fonciere) AS average_price,
+          MAX(valeur_fonciere) AS max_price,
+          MIN(valeur_fonciere) AS min_price
+        FROM stg_dvf
+        WHERE
+          code_postal = ${parseInt(location)}
+          AND date_mutation BETWEEN ${startDate} AND ${endDate}
+        GROUP BY DATE_TRUNC('month', date_mutation)
+        ORDER BY month DESC
+      `
+  } else {
+    stats = await prisma.$queryRaw`
+        SELECT
+          DATE_TRUNC('month', date_mutation) AS month,
+          AVG(valeur_fonciere) AS average_price,
+          MAX(valeur_fonciere) AS max_price,
+          MIN(valeur_fonciere) AS min_price
+        FROM stg_dvf
+        WHERE
+          (code_departement = ${location} OR commune = ${location})
+          AND date_mutation BETWEEN ${startDate} AND ${endDate}
+        GROUP BY DATE_TRUNC('month', date_mutation)
+        ORDER BY month DESC
+      `
+  }
+
+  return {
+    monthlyStats: (stats as any[]).map(stat => ({
+      month: stat.month,
+      averagePrice: Number(stat.average_price),
+      maxPrice: Number(stat.max_price),
+      minPrice: Number(stat.min_price)
+    }))
+  }
+}
