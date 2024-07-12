@@ -89,6 +89,7 @@ model stg_dvf {
   @@ignore
 }
 
+// Ajouter champs image : String et 
 model User {
   id          String  @id @default(uuid())
   firebase_id String  @unique

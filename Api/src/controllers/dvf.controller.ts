@@ -1,31 +1,31 @@
 import { Request, Response } from 'express'
+import { getDvfData as getDvfDataService } from '../services/dvf.service'
 
-export const getDvfData = (req: Request, res: Response) => {
-  const { postalCode, pieces, budget } = req.query
+export const getDvfData = async (req: Request, res: Response) => {
+  try {
+    const { postalCode, pieces, budget } = req.query
 
-  // Vérification des paramètres
-  if (!postalCode || !pieces || !budget) {
-    return res.status(400).json({ error: 'Missing required parameters' })
+    // Vérification et conversion des paramètres
+    if (!postalCode || !pieces || !budget) {
+      return res.status(400).json({ error: 'Missing required parameters' })
+    }
+
+    const postalCodeStr = String(postalCode)
+    const piecesArr = (pieces as string).split(',').map(Number)
+    const budgetArr = (budget as string).split(',').map(Number)
+
+    if (piecesArr.length !== 2 || budgetArr.length !== 2) {
+      return res
+        .status(400)
+        .json({ error: 'Invalid format for pieces or budget' })
+    }
+
+    const result = await getDvfDataService(postalCodeStr, piecesArr, budgetArr)
+    res.json(result)
+  } catch (error) {
+    console.error('Error in getDvfData:', error)
+    res
+      .status(500)
+      .json({ error: 'An error occurred while processing the request' })
   }
-
-  // Conversion et validation des paramètres
-  const postalCodeStr = String(postalCode)
-  const piecesArr = (pieces as string).split(',').map(Number)
-  const budgetArr = (budget as string).split(',').map(Number)
-
-  // Vérification du format des paramètres
-  if (piecesArr.length !== 2 || budgetArr.length !== 2) {
-    return res
-      .status(400)
-      .json({ error: 'Invalid format for pieces or budget' })
-  }
-
-  // Logique à implémenter plus tard
-  // Pour l'instant, nous renvoyons simplement les paramètres reçus
-  res.json({
-    postalCode: postalCodeStr,
-    pieces: piecesArr,
-    budget: budgetArr,
-    message: 'Parameters received successfully'
-  })
 }
