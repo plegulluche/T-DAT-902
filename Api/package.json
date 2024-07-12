@@ -17,14 +17,9 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint . --fix",
     "lint:check": "eslint .",
-    "lint:fix": "eslint . --ext .ts --fix",
+    "lint:fix": "eslint . --fix",
+    "type-check": "tsc --project ts.config.json --noEmit",
     "explore": "ts-node src/utils/describe_csv.ts"
-  },
-  "lint-staged": {
-    "*.ts": [
-      "eslint --fix",
-      "prettier --write"
-    ]
   },
   "keywords": [],
   "author": "Pierre Le gulluche",
@@ -32,6 +27,7 @@
   "dependencies": {
     "@prisma/client": "^5.16.1",
     "cors": "^2.8.5",
+    "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "helmet": "^7.1.0",

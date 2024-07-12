@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'test') {
   dotenv.config()
 }
 
-export async function initializeDatabase() {
+export async function initializeMongoDatabase() {
   // Utilisez des valeurs par défaut pour le développement/test
   const username = process.env.MONGO_INITDB_ROOT_USERNAME || 'testuser'
   const password = process.env.MONGO_INITDB_ROOT_PASSWORD || 'testpass'
