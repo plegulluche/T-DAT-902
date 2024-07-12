@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '../firebaseConfig';
 import { useNavigate } from 'react-router';
+import axios from 'axios';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
@@ -15,6 +16,14 @@ const Login: React.FC = () => {
                 const user = userCredential.user;
                 console.log('uid', user.uid);
                 console.log('email', user.email);
+                axios.get('http://localhost:3000/api/users/id').then((response) => {
+                    if (response.data) 
+                        localStorage.setItem('user', JSON.stringify(response.data));
+                   console.log(response.data);
+                }).catch((error) => {
+                    console.error('Error fetching properties:', error);
+                    alert((error as Error).message);
+                });
             });
             console.log('Logged in successfully!');
             navigate('/');

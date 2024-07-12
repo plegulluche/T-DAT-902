@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import {
    Link,
     RouterProvider,
@@ -12,6 +12,7 @@ import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import SettingsPage from "./pages/settings.page";
 import ComparePage from "./pages/compare";
+import { useEffect } from "react";
 
 function LeftMenu() {
   const location = useLocation();
@@ -72,13 +73,34 @@ function LeftMenu() {
      </div>
     );
   }
+  
 
+  function ProtectedRoute(props: {
+    children: React.ReactNode;
+  }) {
+    const user = localStorage.getItem('user');
+    const navigate = useNavigate()
+
+    useEffect(() => {
+      if (!user) {
+        navigate('/login');
+      }
+    }, [])
+
+    return (
+      <div>
+        {props.children}
+      </div>
+    )
+  }
   
   export const routes = [
     {
       path: "/",
       element: (
+        <ProtectedRoute>
           <IndexLayout />
+        </ProtectedRoute>
       ),
       children: [
         {

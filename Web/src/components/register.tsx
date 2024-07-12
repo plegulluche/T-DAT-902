@@ -18,13 +18,11 @@ const Register: React.FC = () => {
         try {
             await createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
                 const user = userCredential.user;
-                console.log(user.uid);
                 axios.post('http://localhost:3000/api/users', {
                     firebase_id: user.uid,
                     email: user.email,
                 }).then((response) => {
-                    console.log(response.data);
-                    console.log('Registered successfully!');
+                    localStorage.setItem('user', JSON.stringify(response.data));
                     navigate('/');
                 }).catch((error) => {
                     console.error('Error registering:', error);
