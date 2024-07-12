@@ -5,6 +5,7 @@ import * as dotenv from 'dotenv'
 import swaggerUi from 'swagger-ui-express'
 import swaggerSpec from './config/swagger'
 import userRoutes from './routes/user.routes'
+import dvfRoutes from './routes/dvf.routes'
 import { connectToMongoDatabase } from './config/mongo/database.mongo.connector'
 import { initializeMongoDatabase } from './config/mongo/database.mongo.init'
 import { PrismaClient } from '@prisma/client'
@@ -29,6 +30,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 // ROUTES API
 app.use('/api/users', userRoutes)
+app.use('/api/dvf', dvfRoutes)
 
 const PORT = process.env.PORT || 3000
 
