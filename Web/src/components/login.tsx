@@ -16,10 +16,11 @@ const Login: React.FC = () => {
                 const user = userCredential.user;
                 console.log('uid', user.uid);
                 console.log('email', user.email);
-                axios.get('http://localhost:3000/api/users/id').then((response) => {
-                    if (response.data) 
+                axios.get(`http://localhost:3000/api/users/firebase/${user.uid}`).then((response) => {
+                    if (response.data) {
                         localStorage.setItem('user', JSON.stringify(response.data));
-                   console.log(response.data);
+                        navigate('/')
+                    }
                 }).catch((error) => {
                     console.error('Error fetching properties:', error);
                     alert((error as Error).message);

@@ -55,4 +55,19 @@ export class UserController {
       res.status(500).json({ error: 'Internal server error' })
     }
   }
+
+async getUserByIdFirebase(req: Request, res: Response): Promise<void> {
+  try {
+    const { id } = req.params
+    const user = await this.userService.getUserByFirebaseId(id)
+    if (user) {
+      res.json(user)
+    } else {
+      res.status(404).json({ error: 'User not found' })
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' })
+  }
+}
+
 }

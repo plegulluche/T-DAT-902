@@ -16,6 +16,12 @@ import { useEffect } from "react";
 
 function LeftMenu() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const onDisconnect = () => {
+    localStorage.removeItem('user');
+    navigate('/login');
+  }
 
   return (
       <div className="w-[200px] h-full bg-black flex flex-col items-center justify-between py-10 drop-shadow-lg rounded-lg px-5">
@@ -53,7 +59,7 @@ function LeftMenu() {
             </div>
           </Link>
         </div>
-        <div className="flex gap-2 items-center w-full pl-3">
+        <div className="flex gap-2 items-center w-full pl-3 hover:cursor-pointer" onClick={() => onDisconnect()}>
           <LogOut width={20} height={20} className="text-red-500" />
           <p className="text-red-500">Log out</p>
         </div>
