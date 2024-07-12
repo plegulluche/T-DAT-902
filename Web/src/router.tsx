@@ -10,7 +10,7 @@ import Onboarding from "./pages/onboarding";
 import MapPage from "./pages/map";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
-import SettingsPage from "./pages/settings.page";
+import ProfilePage from "./pages/profile.page";
 import ComparePage from "./pages/compare";
 import { useEffect } from "react";
 
@@ -52,10 +52,10 @@ function LeftMenu() {
               <p className="font-semibold">Compare</p>
             </div>
           </Link>
-          <Link to="/settings">
-            <div className={`flex gap-3 items-center ${location.pathname === "/settings" ? "bg-gray-100/15" : "hover:bg-gray-100/15" } py-2 px-3 rounded hover:cursor-pointer`}>
-              <Settings width={24} height={24} className={location.pathname === "/settings" ? "text-white" : "text-gray-200"} strokeWidth={2} />
-              <p className="font-semibold">Settings</p>
+          <Link to="/profile">
+            <div className={`flex gap-3 items-center ${location.pathname === "/profile" ? "bg-gray-100/15" : "hover:bg-gray-100/15" } py-2 px-3 rounded hover:cursor-pointer`}>
+              <Settings width={24} height={24} className={location.pathname === "/profile" ? "text-white" : "text-gray-200"} strokeWidth={2} />
+              <p className="font-semibold">Profile</p>
             </div>
           </Link>
         </div>
@@ -121,9 +121,9 @@ function LeftMenu() {
           element: <MapPage />,
         },
         {
-          path: "/settings",
-          breadcrumbName: "/settings",
-          element: <SettingsPage />,
+          path: "/profile",
+          breadcrumbName: "/profile",
+          element: <ProfilePage />,
         },
         {
           path: "/compare",
