@@ -10,7 +10,6 @@ const password = process.env.MONGO_INITDB_ROOT_PASSWORD || 'defaultpass'
 const port = process.env.MONGO_PORT || '27017'
 
 const url = `mongodb://${username}:${password}@localhost:${port}`
-console.log('url', url)
 
 export async function connectToMongoDatabase() {
   try {

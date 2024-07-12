@@ -45,20 +45,22 @@ async function startApp() {
     // Initialisation de la base de données MongoDB
     await initializeMongoDatabase()
     console.log('MongoDB initialized')
+  } catch (error) {
+    console.error('Could not connect to MongoDB')
+  }
 
+  try {
     // Connexion à la base de données PostgreSQL
     await prisma.$connect()
     console.log('Connected to PostgreSQL')
-
-    if (process.env.NODE_ENV !== 'test') {
-      app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`)
-      })
-    }
   } catch (error) {
-    console.error('Database connection failed', error)
-    // Arrêt graceful de l'application sans plantage
-    process.exit(1)
+    console.error('Could not connect to PostgreSQL')
+  }
+
+  if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`)
+    })
   }
 }
 

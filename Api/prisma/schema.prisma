@@ -7,262 +7,92 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model dvf_data {
+  id                         Int       @id @default(autoincrement())
+  No_disposition             Int?      @map("No disposition")
+  Date_mutation              DateTime? @map("Date mutation") @db.Date
+  Nature_mutation            String?   @map("Nature mutation") @db.VarChar(50)
+  Valeur_fonciere            Int?      @map("Valeur fonciere")
+  No_voie                    Int?      @map("No voie")
+  B_T_Q                      String?   @map("B/T/Q") @db.VarChar(10)
+  Type_de_voie               String?   @map("Type de voie") @db.VarChar(50)
+  Code_voie                  String?   @map("Code voie") @db.VarChar(10)
+  Voie                       String?   @db.VarChar(100)
+  Code_postal                Int?      @map("Code postal")
+  Commune                    String?   @db.VarChar(100)
+  Code_departement           String?   @map("Code departement") @db.VarChar(10)
+  Code_commune               Int?      @map("Code commune")
+  Prefixe_de_section         Float?    @map("Prefixe de section")
+  Section                    String?   @db.VarChar(10)
+  No_plan                    Int?      @map("No plan")
+  No_Volume                  String?   @map("No Volume") @db.VarChar(50)
+  er_lot                     String?   @map("1er lot") @db.VarChar(50)
+  Surface_Carrez_du_1er_lot  String?   @map("Surface Carrez du 1er lot") @db.VarChar(50)
+  eme_lot                    String?   @map("2eme lot") @db.VarChar(50)
+  Surface_Carrez_du_2eme_lot String?   @map("Surface Carrez du 2eme lot") @db.VarChar(50)
+  deuxieme_lot                    String?   @map("3eme lot") @db.VarChar(50)
+  Surface_Carrez_du_3eme_lot String?   @map("Surface Carrez du 3eme lot") @db.VarChar(50)
+  troisieme_lot                    String?   @map("4eme lot") @db.VarChar(50)
+  Surface_Carrez_du_4eme_lot String?   @map("Surface Carrez du 4eme lot") @db.VarChar(50)
+  quatrieme_lot                    String?   @map("5eme lot") @db.VarChar(50)
+  Surface_Carrez_du_5eme_lot String?   @map("Surface Carrez du 5eme lot") @db.VarChar(50)
+  Nombre_de_lots             Int?      @map("Nombre de lots")
+  Code_type_local            Int?      @map("Code type local")
+  Type_local                 String?   @map("Type local") @db.VarChar(50)
+  Identifiant_local          Float?    @map("Identifiant local")
+  Surface_reelle_bati        Int?      @map("Surface reelle bati")
+  Nombre_pieces_principales  Int?      @map("Nombre pieces principales")
+  Nature_culture             String?   @map("Nature culture") @db.VarChar(50)
+  Nature_culture_speciale    String?   @map("Nature culture speciale") @db.VarChar(50)
+  Surface_terrain            Int?      @map("Surface terrain")
+}
+
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model dvf {
-  Identifiant_de_document    String? @map("Identifiant de document")
-  Reference_document         String? @map("Reference document")
-  Articles_CGI               String? @map("1 Articles CGI")
-  Articles_CGI               String? @map("2 Articles CGI")
-  Articles_CGI               String? @map("3 Articles CGI")
-  Articles_CGI               String? @map("4 Articles CGI")
-  Articles_CGI               String? @map("5 Articles CGI")
-  No_disposition             String? @map("No disposition")
-  Date_mutation              String? @map("Date mutation")
-  Nature_mutation            String? @map("Nature mutation")
-  Valeur_fonciere            String? @map("Valeur fonciere")
-  No_voie                    String? @map("No voie")
-  B_T_Q                      String? @map("B/T/Q")
-  Type_de_voie               String? @map("Type de voie")
-  Code_voie                  String? @map("Code voie")
-  Voie                       String?
-  Code_postal                String? @map("Code postal")
-  Commune                    String?
-  Code_departement           String? @map("Code departement")
-  Code_commune               String? @map("Code commune")
-  Prefixe_de_section         String? @map("Prefixe de section")
-  Section                    String?
-  No_plan                    String? @map("No plan")
-  No_Volume                  String? @map("No Volume")
-  er_lot                     String? @map("1er lot")
-  Surface_Carrez_du_1er_lot  String? @map("Surface Carrez du 1er lot")
-  eme_lot                    String? @map("2eme lot")
-  Surface_Carrez_du_2eme_lot String? @map("Surface Carrez du 2eme lot")
-  eme_lot                    String? @map("3eme lot")
-  Surface_Carrez_du_3eme_lot String? @map("Surface Carrez du 3eme lot")
-  eme_lot                    String? @map("4eme lot")
-  Surface_Carrez_du_4eme_lot String? @map("Surface Carrez du 4eme lot")
-  eme_lot                    String? @map("5eme lot")
-  Surface_Carrez_du_5eme_lot String? @map("Surface Carrez du 5eme lot")
-  Nombre_de_lots             String? @map("Nombre de lots")
-  Code_type_local            String? @map("Code type local")
-  Type_local                 String? @map("Type local")
-  Identifiant_local          String? @map("Identifiant local")
-  Surface_reelle_bati        String? @map("Surface reelle bati")
-  Nombre_pieces_principales  String? @map("Nombre pieces principales")
-  Nature_culture             String? @map("Nature culture")
-  Nature_culture_speciale    String? @map("Nature culture speciale")
-  Surface_terrain            String? @map("Surface terrain")
+model stg_dvf {
+  id                         Int?
+  no_disposition             Int?
+  date_mutation              DateTime? @db.Date
+  nature_mutation            String?   @db.VarChar(50)
+  valeur_fonciere            BigInt?
+  no_voie                    Int?
+  b_t_q                      String?   @db.VarChar(10)
+  type_de_voie               String?   @db.VarChar(50)
+  code_voie                  String?   @db.VarChar(10)
+  voie                       String?   @db.VarChar(100)
+  code_postal                Int?
+  commune                    String?   @db.VarChar(100)
+  code_departement           String?   @db.VarChar(10)
+  code_commune               Int?
+  prefixe_de_section         Float?
+  section                    String?   @db.VarChar(10)
+  no_plan                    Int?
+  no_volume                  String?   @db.VarChar(50)
+  premier_lot                String?   @db.VarChar(50)
+  surface_carrez_du_1er_lot  Decimal?  @db.Decimal
+  deuxieme_lot               String?   @db.VarChar(50)
+  surface_carrez_du_2eme_lot Decimal?  @db.Decimal
+  troiseme_lot               String?   @db.VarChar(50)
+  surface_carrez_du_3eme_lot Decimal?  @db.Decimal
+  quatrieme_lot              String?   @db.VarChar(50)
+  surface_carrez_du_4eme_lot Decimal?  @db.Decimal
+  cinquieme_lot              String?   @db.VarChar(50)
+  surface_carrez_du_5eme_lot Decimal?  @db.Decimal
+  nombre_de_lots             Int?
+  code_type_local            Int?
+  type_local                 String?   @db.VarChar(50)
+  surface_reelle_bati        Int?
+  nombre_pieces_principales  Int?
+  nature_culture             String?   @db.VarChar(50)
+  nature_culture_speciale    String?   @db.VarChar(50)
+  surface_terrain            Int?
 
   @@ignore
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model v_arrondissement {
-  ARR      String? @db.VarChar(50)
-  DEP      String? @db.VarChar(50)
-  REG      Int?
-  CHEFLIEU String? @db.VarChar(50)
-  TNCC     Int?
-  NCC      String? @db.VarChar(50)
-  NCCENR   String? @db.VarChar(50)
-  LIBELLE  String? @db.VarChar(50)
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model v_canton {
-  CAN        Int?
-  DEP        Int?
-  REG        Int?
-  COMPCT     Int?
-  BURCENTRAL Int?
-  TNCC       Int?
-  NCC        String? @db.VarChar(50)
-  NCCENR     String? @db.VarChar(50)
-  LIBELLE    String? @db.VarChar(50)
-  TYPECT     String? @db.VarChar(50)
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model v_comer {
-  COMER   Int?
-  TNCC    Int?
-  NCC     String? @db.VarChar(50)
-  NCCENR  String? @db.VarChar(50)
-  LIBELLE String? @db.VarChar(50)
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model v_commune {
-  TYPECOM   String? @db.VarChar(50)
-  COM       Int?
-  REG       Int?
-  DEP       Int?
-  CTCD      Float?  @db.Real
-  ARR       Int?
-  TNCC      Int?
-  NCC       String? @db.VarChar(50)
-  NCCENR    String? @db.VarChar(50)
-  LIBELLE   String? @db.VarChar(50)
-  CAN       Int?
-  COMPARENT Int?
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model v_commune_comer {
-  COM_COMER     Int?
-  TNCC          Int?
-  NCC           String? @db.VarChar(50)
-  NCCENR        String? @db.VarChar(50)
-  LIBELLE       String? @db.VarChar(50)
-  NATURE_ZONAGE String? @db.VarChar(50)
-  COMER         Int?
-  LIBELLE_COMER String? @db.VarChar(50)
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model v_commune_depuis {
-  COM        Int?
-  TNCC       Int?
-  NCC        String? @db.VarChar(50)
-  NCCENR     String? @db.VarChar(50)
-  LIBELLE    String? @db.VarChar(50)
-  DATE_DEBUT String? @db.VarChar(50)
-  DATE_FIN   String? @db.VarChar(50)
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model v_ctcd {
-  CTCD    String? @db.VarChar(50)
-  REG     Int?
-  TNCC    Int?
-  NCC     String? @db.VarChar(50)
-  NCCENR  String? @db.VarChar(50)
-  LIBELLE String? @db.VarChar(50)
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model v_departement {
-  DEP      String? @db.VarChar(50)
-  REG      Int?
-  CHEFLIEU String? @db.VarChar(50)
-  TNCC     Int?
-  NCC      String? @db.VarChar(50)
-  NCCENR   String? @db.VarChar(50)
-  LIBELLE  String? @db.VarChar(50)
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model v_mvtcommune {
-  MOD        Int?
-  DATE_EFF   String? @db.VarChar(50)
-  TYPECOM_AV String? @db.VarChar(50)
-  COM_AV     Int?
-  TNCC_AV    Int?
-  NCC_AV     String? @db.VarChar(50)
-  NCCENR_AV  String? @db.VarChar(50)
-  LIBELLE_AV String? @db.VarChar(50)
-  TYPECOM_AP String? @db.VarChar(50)
-  COM_AP     Int?
-  TNCC_AP    Int?
-  NCC_AP     String? @db.VarChar(50)
-  NCCENR_AP  String? @db.VarChar(50)
-  LIBELLE_AP String? @db.VarChar(50)
-  indic_oe   String? @db.VarChar(50)
-  indic_oe_  String? @map("indic_oe₂") @db.VarChar(50)
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model v_pays {
-  COG      Int?
-  ACTUAL   Int?
-  CAPAY    Int?
-  CRPAY    Int?
-  ANI      Int?
-  LIBCOG   String? @db.VarChar(50)
-  LIBENR   String? @db.VarChar(64)
-  ANCNOM   String? @db.VarChar(50)
-  CODEISO2 String? @db.VarChar(50)
-  CODEISO3 String? @db.VarChar(50)
-  CODENUM3 Int?
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model v_region {
-  REG      Int?
-  CHEFLIEU String? @db.VarChar(50)
-  TNCC     Int?
-  NCC      String? @db.VarChar(50)
-  NCCENR   String? @db.VarChar(50)
-  LIBELLE  String? @db.VarChar(50)
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model valeursfoncieres {
-  Identifiant_de_document    String? @map("Identifiant de document") @db.VarChar(50)
-  Reference_document         String? @map("Reference document") @db.VarChar(50)
-  Articles_CGI               String? @map("1 Articles CGI") @db.VarChar(50)
-  Articles_CGI               String? @map("2 Articles CGI") @db.VarChar(50)
-  Articles_CGI               String? @map("3 Articles CGI") @db.VarChar(50)
-  Articles_CGI               String? @map("4 Articles CGI") @db.VarChar(50)
-  Articles_CGI               String? @map("5 Articles CGI") @db.VarChar(50)
-  No_disposition             Int?    @map("No disposition")
-  Date_mutation              String? @map("Date mutation") @db.VarChar(50)
-  Nature_mutation            String? @map("Nature mutation") @db.VarChar(50)
-  Valeur_fonciere            String? @map("Valeur fonciere") @db.VarChar(50)
-  No_voie                    Int?    @map("No voie")
-  B_T_Q                      String? @map("B/T/Q") @db.VarChar(50)
-  Type_de_voie               String? @map("Type de voie") @db.VarChar(50)
-  Code_voie                  String? @map("Code voie") @db.VarChar(50)
-  Voie                       String? @db.VarChar(50)
-  Code_postal                Int?    @map("Code postal")
-  Commune                    String? @db.VarChar(50)
-  Code_departement           Int?    @map("Code departement")
-  Code_commune               Int?    @map("Code commune")
-  Prefixe_de_section         String? @map("Prefixe de section") @db.VarChar(50)
-  Section                    String? @db.VarChar(50)
-  No_plan                    Int?    @map("No plan")
-  No_Volume                  String? @map("No Volume") @db.VarChar(50)
-  er_lot                     Int?    @map("1er lot")
-  Surface_Carrez_du_1er_lot  String? @map("Surface Carrez du 1er lot") @db.VarChar(50)
-  eme_lot                    Int?    @map("2eme lot")
-  Surface_Carrez_du_2eme_lot String? @map("Surface Carrez du 2eme lot") @db.VarChar(50)
-  eme_lot                    String? @map("3eme lot") @db.VarChar(50)
-  Surface_Carrez_du_3eme_lot String? @map("Surface Carrez du 3eme lot") @db.VarChar(50)
-  eme_lot                    String? @map("4eme lot") @db.VarChar(50)
-  Surface_Carrez_du_4eme_lot String? @map("Surface Carrez du 4eme lot") @db.VarChar(50)
-  eme_lot                    String? @map("5eme lot") @db.VarChar(50)
-  Surface_Carrez_du_5eme_lot String? @map("Surface Carrez du 5eme lot") @db.VarChar(50)
-  Nombre_de_lots             Int?    @map("Nombre de lots")
-  Code_type_local            Int?    @map("Code type local")
-  Type_local                 String? @map("Type local") @db.VarChar(50)
-  Identifiant_local          String? @map("Identifiant local") @db.VarChar(50)
-  Surface_reelle_bati        Int?    @map("Surface reelle bati")
-  Nombre_pieces_principales  Int?    @map("Nombre pieces principales")
-  Nature_culture             String? @map("Nature culture") @db.VarChar(50)
-  Nature_culture_speciale    String? @map("Nature culture speciale") @db.VarChar(50)
-  Surface_terrain            Int?    @map("Surface terrain")
-
-  @@ignore
+model User {
+  id          String  @id @default(uuid())
+  firebase_id String  @unique
+  email       String  @unique
+  name        String?
+  firstname   String?
 }

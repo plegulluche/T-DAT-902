@@ -111,4 +111,4 @@ Une documentation Swagger de l'API est disponible à l'adresse `http://localhost
 
 ## Commandes Prisma 
 
-- 
+- npx prisma db pull
