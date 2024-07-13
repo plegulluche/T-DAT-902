@@ -3,6 +3,7 @@ import mapboxgl from "mapbox-gl";
 import { useEffect, useRef, useState } from "react";
 import RecentSales from "./recentSales";
 import Chart from "./chart";
+import axios from "axios";
 // import axios from "axios";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF0aGlldWJsYWlzIiwiYSI6ImNrZjZneDRmdDB3bG4yeHA5ZHN5NDNsYm0ifQ.0-ZZSb86hkNjwGqMJEiF2Q';
@@ -37,19 +38,32 @@ function Header() {
 
 const Map: React.FC = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const [hoveredDepartment, setHoveredDepartment] = useState<string | null>(null);
-  const [hoveredCity, setHoveredCity] = useState<string | null>(null);
   const [selectedDepartmentId, setSelectedDepartmentId] = useState<string | null>(localStorage.getItem('departement'));
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
   useEffect(() => {
-    // axios.get('http://localhost:3000/api/users/id').then((response) => {
-    //   console.log(response.data);
-    // }
-    // ).catch((error) => {
-    //   console.error('Error fetching properties:', error);
-    //   alert((error as Error).message);
-    // });
+    if (selectedDepartmentId) {
+       axios.get(`http://localhost:3000/api/dvf/stats/${selectedDepartmentId}`).then((response) => {
+        console.log(response.data);
+       }
+       ).catch((error) => {
+         console.error('Error fetching properties:', error);
+       });
+    }
+  }, [selectedDepartmentId]);
+
+  useEffect(() => {
+    if (selectedCity) {
+      axios.get(`http://localhost:3000/api/dvf/stats/${selectedCity}`).then((response) => {
+        console.log(response.data);
+      }
+       ).catch((error) => {
+         console.error('Error fetching properties:', error);
+       });
+    }
+  }, [selectedCity]);
+
+  useEffect(() => {
     if (mapContainerRef.current) {
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
@@ -71,7 +85,7 @@ const Map: React.FC = () => {
 
         map.addSource('villes', {
           type: 'geojson',
-          data: '/villes.geojson'
+          data: '/communes.geojson'
         });
 
         map.addLayer({
@@ -159,7 +173,7 @@ const Map: React.FC = () => {
             'fill-color': '#FF5733',
             'fill-opacity': 0.5
           },
-          filter: ['==', 'id', ''],
+          filter: ['==', 'code', ''],
           minzoom: 8
         });
 
@@ -179,7 +193,6 @@ const Map: React.FC = () => {
         map.on('mousemove', 'departements-layer', (e) => {
           if (e.features && e.features.length > 0) {
             const hoveredFeature = e.features[0];
-            setHoveredDepartment(hoveredFeature.properties?.code as string);
             map.setFilter('departements-hover', ['==', 'code', hoveredFeature.properties?.code as string]);
           }
         });
@@ -187,8 +200,7 @@ const Map: React.FC = () => {
         map.on('mousemove', 'ville-layer', (e) => {
           if (e.features && e.features.length > 0) {
             const hoveredFeature = e.features[0];
-            setHoveredCity(hoveredFeature.properties?.com_code as string);
-            map.setFilter('city-hover', ['==', 'com_siren_code', hoveredFeature.properties?.com_siren_code as string]);
+            map.setFilter('city-hover', ['==', 'code', hoveredFeature.properties?.code as string]);
           }
         });
 
@@ -206,13 +218,11 @@ const Map: React.FC = () => {
         });
   
         map.on('mouseleave', 'departements-layer', () => {
-          setHoveredDepartment(null);
           map.setFilter('departements-hover', ['==', 'code', '']);
         });
 
         map.on('mouseleave', 'ville-layer', () => {
-          setHoveredCity(null);
-          map.setFilter('city-hover', ['==', 'com_siren_code', '']);
+          map.setFilter('city-hover', ['==', 'code', '']);
         });
 
         map.on('click', 'departements-layer', (e) => {
@@ -226,8 +236,8 @@ const Map: React.FC = () => {
         map.on('click', 'ville-layer', (e) => {
           if (e.features && e.features.length > 0) {
             const clickedFeature = e.features[0];
-            setSelectedCity(clickedFeature.properties?.com_code as string);
-            map.setFilter('city-selected', ['==', 'com_siren_code', clickedFeature.properties?.com_siren_code as string]);
+            setSelectedCity(clickedFeature.properties?.code as string);
+            map.setFilter('city-selected', ['==', 'code', clickedFeature.properties?.code as string]);
           }
         });
         map.setFilter('departements-selected', ['==', 'code', localStorage.getItem('departement')]);

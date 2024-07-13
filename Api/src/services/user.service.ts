@@ -34,8 +34,7 @@ export class UserService {
 
   async getUserByFirebaseId(id: string): Promise<User | null> {
     return this.prisma.user.findUnique({
-      where: { firebase_id: id},
+      where: { firebase_id: id }
     })
-}
-
+  }
 }

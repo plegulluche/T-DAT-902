@@ -1,0 +1,24 @@
+# DOCKER MONGO 
+MONGO_INITDB_ROOT_USERNAME=root
+MONGO_INITDB_ROOT_PASSWORD=epiket2024
+MONGO_PORT=27017
+
+# Skipping tests for commit when writting tests
+SKIP_TESTS=true
+
+# DOCKER DEV POSTGRES
+POSTGRES_USER=root
+POSTGRES_PASSWORD=epiket2024
+POSTGRES_DB=t_dat_902
+POSTGRES_PORT=5434
+
+# NABIL POSTGRES
+DB_HOST = 78.197.80.174
+DB_NAME = homepedia
+DB_PASSWORD = Illbethere4U
+DB_PORT = 5432
+DB_SCHEMA = homepedia
+DB_USER = postgres
+
+# Prisma database URL
+DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public"
