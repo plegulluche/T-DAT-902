@@ -10,7 +10,8 @@ import {
 const prisma = new PrismaClient()
 
 export const getDvfData = async (
-  postalCode: string,
+  inseeCode: string,
+  departementCode: string,
   pieces: number[],
   budget: number[]
 ): Promise<{ priceEvolution: PriceEvolutionItem[]; lastSales: SaleItem[] }> => {
@@ -21,50 +22,82 @@ export const getDvfData = async (
       ? endOfYear(new Date(2023, 0, 1)) // 31 décembre 2023
       : currentDate
 
-  console.log('Query parameters:', {
-    postalCode,
-    pieces,
-    budget,
-    startDate,
-    endDate
-  })
+  let priceEvolutionRaw
+  let lastSalesRaw
 
-  // Requête pour obtenir l'évolution du prix moyen de vente
-  const priceEvolutionRaw = await prisma.$queryRaw`
-    SELECT
-      DATE_TRUNC('month', date_mutation) AS month,
-      AVG(valeur_fonciere) AS average_price,
-      COUNT(*) AS sales_count
-    FROM stg_dvf
-    WHERE
-      code_postal = ${parseInt(postalCode)}
-      AND nombre_pieces_principales BETWEEN ${pieces[0]} AND ${pieces[1]}
-      AND valeur_fonciere BETWEEN ${BigInt(budget[0])} AND ${BigInt(budget[1])}
-      AND date_mutation BETWEEN ${startDate} AND ${endDate}
-    GROUP BY DATE_TRUNC('month', date_mutation)
-    ORDER BY month DESC
-  `
+  if (inseeCode) {
+    const codeDepartement = inseeCode.slice(0, 2)
+    const codeCommune = inseeCode.slice(2)
+
+    priceEvolutionRaw = await prisma.$queryRaw`
+      SELECT
+        DATE_TRUNC('month', date_mutation) AS month,
+        AVG(valeur_fonciere) AS average_price,
+        COUNT(*) AS sales_count
+      FROM stg_dvf
+      WHERE
+        code_departement = ${codeDepartement}
+        AND code_commune = ${parseInt(codeCommune)}
+        AND nombre_pieces_principales BETWEEN ${pieces[0]} AND ${pieces[1]}
+        AND valeur_fonciere BETWEEN ${BigInt(budget[0])} AND ${BigInt(budget[1])}
+        AND date_mutation BETWEEN ${startDate} AND ${endDate}
+      GROUP BY DATE_TRUNC('month', date_mutation)
+      ORDER BY month DESC
+    `
+
+    lastSalesRaw = await prisma.$queryRaw`
+      SELECT
+        date_mutation,
+        valeur_fonciere,
+        nombre_pieces_principales,
+        surface_reelle_bati,
+        type_local
+      FROM stg_dvf
+      WHERE
+        code_departement = ${codeDepartement}
+        AND code_commune = ${parseInt(codeCommune)}
+        AND nombre_pieces_principales BETWEEN ${pieces[0]} AND ${pieces[1]}
+        AND valeur_fonciere BETWEEN ${BigInt(budget[0])} AND ${BigInt(budget[1])}
+        AND date_mutation BETWEEN ${startDate} AND ${endDate}
+      ORDER BY date_mutation DESC
+      LIMIT 10
+    `
+  } else if (departementCode) {
+    priceEvolutionRaw = await prisma.$queryRaw`
+      SELECT
+        DATE_TRUNC('month', date_mutation) AS month,
+        AVG(valeur_fonciere) AS average_price,
+        COUNT(*) AS sales_count
+      FROM stg_dvf
+      WHERE
+        code_departement = ${departementCode}
+        AND nombre_pieces_principales BETWEEN ${pieces[0]} AND ${pieces[1]}
+        AND valeur_fonciere BETWEEN ${BigInt(budget[0])} AND ${BigInt(budget[1])}
+        AND date_mutation BETWEEN ${startDate} AND ${endDate}
+      GROUP BY DATE_TRUNC('month', date_mutation)
+      ORDER BY month DESC
+    `
+
+    lastSalesRaw = await prisma.$queryRaw`
+      SELECT
+        date_mutation,
+        valeur_fonciere,
+        nombre_pieces_principales,
+        surface_reelle_bati,
+        type_local
+      FROM stg_dvf
+      WHERE
+        code_departement = ${departementCode}
+        AND nombre_pieces_principales BETWEEN ${pieces[0]} AND ${pieces[1]}
+        AND valeur_fonciere BETWEEN ${BigInt(budget[0])} AND ${BigInt(budget[1])}
+        AND date_mutation BETWEEN ${startDate} AND ${endDate}
+      ORDER BY date_mutation DESC
+      LIMIT 10
+    `
+  }
 
   const priceEvolution = convertPriceEvolution(priceEvolutionRaw as any[])
   console.log('Price evolution query result:', priceEvolution)
-
-  // Requête pour obtenir les 10 dernières ventes
-  const lastSalesRaw = await prisma.$queryRaw`
-    SELECT
-      date_mutation,
-      valeur_fonciere,
-      nombre_pieces_principales,
-      surface_reelle_bati,
-      type_local
-    FROM stg_dvf
-    WHERE
-      code_postal = ${parseInt(postalCode)}
-      AND nombre_pieces_principales BETWEEN ${pieces[0]} AND ${pieces[1]}
-      AND valeur_fonciere BETWEEN ${BigInt(budget[0])} AND ${BigInt(budget[1])}
-      AND date_mutation BETWEEN ${startDate} AND ${endDate}
-    ORDER BY date_mutation DESC
-    LIMIT 10
-  `
 
   const lastSales = convertLastSales(lastSalesRaw as any[])
   console.log('Last sales query result:', lastSales)
@@ -84,34 +117,35 @@ export const getCityOrDepartmentStats = async (
   const isPostalCode = /^\d+$/.test(location)
 
   let stats
+
   if (isPostalCode) {
     stats = await prisma.$queryRaw`
-        SELECT
-          DATE_TRUNC('month', date_mutation) AS month,
-          AVG(valeur_fonciere) AS average_price,
-          MAX(valeur_fonciere) AS max_price,
-          MIN(valeur_fonciere) AS min_price
-        FROM stg_dvf
-        WHERE
-          code_postal = ${parseInt(location)}
-          AND date_mutation BETWEEN ${startDate} AND ${endDate}
-        GROUP BY DATE_TRUNC('month', date_mutation)
-        ORDER BY month DESC
-      `
+      SELECT
+        DATE_TRUNC('month', date_mutation) AS month,
+        AVG(valeur_fonciere) AS average_price,
+        MAX(valeur_fonciere) AS max_price,
+        MIN(valeur_fonciere) AS min_price
+      FROM stg_dvf
+      WHERE
+        code_postal = ${parseInt(location)}
+        AND date_mutation BETWEEN ${startDate} AND ${endDate}
+      GROUP BY DATE_TRUNC('month', date_mutation)
+      ORDER BY month DESC
+    `
   } else {
     stats = await prisma.$queryRaw`
-        SELECT
-          DATE_TRUNC('month', date_mutation) AS month,
-          AVG(valeur_fonciere) AS average_price,
-          MAX(valeur_fonciere) AS max_price,
-          MIN(valeur_fonciere) AS min_price
-        FROM stg_dvf
-        WHERE
-          (code_departement = ${location} OR commune = ${location})
-          AND date_mutation BETWEEN ${startDate} AND ${endDate}
-        GROUP BY DATE_TRUNC('month', date_mutation)
-        ORDER BY month DESC
-      `
+      SELECT
+        DATE_TRUNC('month', date_mutation) AS month,
+        AVG(valeur_fonciere) AS average_price,
+        MAX(valeur_fonciere) AS max_price,
+        MIN(valeur_fonciere) AS min_price
+      FROM stg_dvf
+      WHERE
+        (code_departement = ${location} OR commune = ${location})
+        AND date_mutation BETWEEN ${startDate} AND ${endDate}
+      GROUP BY DATE_TRUNC('month', date_mutation)
+      ORDER BY month DESC
+    `
   }
 
   return {
