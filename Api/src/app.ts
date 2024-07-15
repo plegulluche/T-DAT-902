@@ -4,15 +4,25 @@ import helmet from 'helmet'
 import * as dotenv from 'dotenv'
 import swaggerUi from 'swagger-ui-express'
 import swaggerSpec from './config/swagger'
-import { PrismaClient } from '@prisma/client'
 import userRoutes from './routes/user.routes'
+import dvfRoutes from './routes/dvf.routes'
+import recentResearchRoutes from './routes/recentResearch.routes'
+import { connectToMongoDatabase } from './config/mongo/database.mongo.connector'
+import { initializeMongoDatabase } from './config/mongo/database.mongo.init'
+import { PrismaClient } from '@prisma/client'
 
 dotenv.config()
-
 const app = express()
 const prisma = new PrismaClient()
 
-app.use(cors())
+app.use(
+  cors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+  })
+)
 app.use(helmet())
 app.use(express.json())
 
@@ -21,12 +31,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 // ROUTES API
 app.use('/api/users', userRoutes)
-
-// Gracefully shuting down Prisma connection
-process.on('SIGINT', async () => {
-  await prisma.$disconnect()
-  process.exit()
-})
+app.use('/api/dvf', dvfRoutes)
+app.use('/api/user/recent-search', recentResearchRoutes)
 
 const PORT = process.env.PORT || 3000
 
@@ -34,29 +40,45 @@ app.get('/', (req, res) => {
   res.send('Hello, World!')
 })
 
-// // Connexion à la base de données
-// connectToDatabase()
-//   .then(() => {
-//     console.log('Database connected')
-//   })
-//   .catch(error => {
-//     console.error('Database connection failed', error)
-//     process.exit(1)
-//   })
-// // Creation de la database
-// initializeDatabase()
-//   .then(() => {
-//     console.log('Database created')
-//   })
-//   .catch(error => {
-//     console.error('Database connection failed', error)
-//     process.exit(1)
-//   })
+async function startApp() {
+  try {
+    // Connexion à la base de données MongoDB
+    await connectToMongoDatabase()
+    console.log('Connected to MongoDB')
 
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
-  })
+    // Initialisation de la base de données MongoDB
+    await initializeMongoDatabase()
+    console.log('MongoDB initialized')
+  } catch (error) {
+    console.error('Could not connect to MongoDB')
+  }
+
+  try {
+    // Connexion à la base de données PostgreSQL
+    await prisma.$connect()
+    console.log('Connected to PostgreSQL')
+  } catch (error) {
+    console.error('Could not connect to PostgreSQL')
+  }
+
+  if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`)
+    })
+  }
 }
+
+startApp()
+
+// Gracefully shuting down database connections
+process.on('SIGINT', async () => {
+  try {
+    await prisma.$disconnect()
+    console.log('Disconnected from PostgreSQL')
+  } catch (error) {
+    console.error('Error disconnecting from PostgreSQL', error)
+  }
+  process.exit()
+})
 
 export default app
