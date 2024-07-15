@@ -1,0 +1,33 @@
+# models/schema.yml
+
+version: 2
+
+models:
+  - name: dvf_treated
+    description: "Aggregated real estate data with type of local or lot information"
+    columns:
+      - name: id
+        description: "Primary key for the table"
+        tests:
+          - unique
+          - not_null
+      - name: date_mutation
+        description: "Date of the mutation"
+      - name: voie
+        description: "Street of the sale"
+      - name: commune
+        description: "City of the sale"
+      - name: code_postal
+        description: "Postal code of the sale"
+      - name: code_departement
+        description: "Department code of the sale"
+      - name: count_type_local
+        description: "Count of distinct types of local"
+      - name: type_local_or_lot
+        description: "Type of local or 'lot' if multiple types are present"
+      - name: total_valeur_fonciere
+        description: "Total value fonciere of the sale"
+      - name: max_surface_terrain
+        description: "Maximum surface terrain of the sale"
+      - name: max_surface_reelle_bati
+        description: "Maximum surface reelle bati of the sale"
