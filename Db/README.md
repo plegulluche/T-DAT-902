@@ -11,20 +11,20 @@ pip install virtualenv
 ### Create virtual environement
 
 ```
-python -m venv local
+python -m venv venv
 ```
 
 ### Activate virtual Environement
 
 ```
     MacOS
-        $ source local/bin/activate
+        $ source venv/bin/activate
 
     Windows
-        $ .\local\Scripts\activate
+        $ .\venv\Scripts\activate
 
     Linux
-        $ source local/bin/activate
+        $ source venv/bin/activate
 ```
 
 ### Install depedencies (you have to be located on the dbt folder)
