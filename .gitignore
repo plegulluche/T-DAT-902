@@ -18,7 +18,6 @@ Thumbs.db
 *.rar
 *.7z
 *.db
-*.sql
 *.sqlite
 *.sqlite3
 *.tar

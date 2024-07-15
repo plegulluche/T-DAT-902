@@ -108,3 +108,10 @@ Une documentation Swagger de l'API est disponible à l'adresse `http://localhost
 - `yarn start` : Lance le serveur en mode production
 - `npx prisma studio` : Ouvre une interface graphique pour explorer et modifier les données de la base de données
 
+
+## Commandes Prisma 
+
+- npx prisma db pull
+npx prisma migrate dev --name add_recent_research
+npx prisma migrate deploy
+npx prisma generate

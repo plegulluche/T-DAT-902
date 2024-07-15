@@ -1,26 +1,17 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# Fonction pour lire une variable depuis le fichier .env
-read_env() {
-  if [ -f Api/.env ]; then
-    grep "^$1=" Api/.env | cut -d '=' -f2
-  fi
-}
-
-# Lire SKIP_TESTS depuis le fichier .env
-SKIP_TESTS=$(read_env SKIP_TESTS)
-
-# Vérifier si SKIP_TESTS est défini à true
-if [ "$SKIP_TESTS" = "true" ]; then
-  echo "Skipping tests due to SKIP_TESTS flag in .env file"
-  exit 0
-fi
-
-# Vérifier les changements dans le dossier Api
+# Vérifiez si des fichiers dans le dossier API ont été modifiés
 if git diff --cached --name-only | grep "^Api/"; then
-  echo "Changes detected in Api folder. Running lint and tests..."
-  cd Api && yarn lint:check && yarn test
-else
-  echo "No changes in Api folder. Skipping lint and tests."
+  cd Api
+  npm run lint:fix
+  npm run type-check
+
+  # Vérifiez s'il y a des erreurs après le lint et le type-check
+  if [ $? -ne 0 ]; then
+    echo "Des erreurs ont été trouvées. Veuillez les corriger avant de commiter."
+    exit 1
+  fi
+
+  git add .
 fi

@@ -10,14 +10,14 @@ const options: swaggerJSDoc.Options = {
         'API pour la gestion des utilisateurs avec authentification Firebase',
       contact: {
         name: 'Pierre Le gulluche',
-        email: 'votre.email@example.com',
-      },
+        email: 'votre.email@example.com'
+      }
     },
     servers: [
       {
         url: 'http://localhost:3000',
-        description: 'Serveur de développement',
-      },
+        description: 'Serveur de développement'
+      }
     ],
     components: {
       schemas: {
@@ -27,26 +27,26 @@ const options: swaggerJSDoc.Options = {
           properties: {
             id: {
               type: 'string',
-              description: "UUID auto-généré pour l'utilisateur",
+              description: "UUID auto-généré pour l'utilisateur"
             },
             firebase_id: {
               type: 'string',
-              description: "ID Firebase unique de l'utilisateur",
+              description: "ID Firebase unique de l'utilisateur"
             },
             email: {
               type: 'string',
               format: 'email',
-              description: "Adresse email de l'utilisateur",
+              description: "Adresse email de l'utilisateur"
             },
             name: {
               type: 'string',
-              description: "Nom de l'utilisateur (optionnel)",
+              description: "Nom de l'utilisateur (optionnel)"
             },
             firstname: {
               type: 'string',
-              description: "Prénom de l'utilisateur (optionnel)",
-            },
-          },
+              description: "Prénom de l'utilisateur (optionnel)"
+            }
+          }
         },
         CreateUserInput: {
           type: 'object',
@@ -54,37 +54,37 @@ const options: swaggerJSDoc.Options = {
           properties: {
             firebase_id: {
               type: 'string',
-              description: "ID Firebase unique de l'utilisateur",
+              description: "ID Firebase unique de l'utilisateur"
             },
             email: {
               type: 'string',
               format: 'email',
-              description: "Adresse email de l'utilisateur",
-            },
-          },
+              description: "Adresse email de l'utilisateur"
+            }
+          }
         },
         UpdateUserInput: {
           type: 'object',
           properties: {
             name: {
               type: 'string',
-              description: "Nouveau nom de l'utilisateur",
+              description: "Nouveau nom de l'utilisateur"
             },
             firstname: {
               type: 'string',
-              description: "Nouveau prénom de l'utilisateur",
+              description: "Nouveau prénom de l'utilisateur"
             },
             email: {
               type: 'string',
               format: 'email',
-              description: "Nouvelle adresse email de l'utilisateur",
-            },
-          },
-        },
-      },
-    },
+              description: "Nouvelle adresse email de l'utilisateur"
+            }
+          }
+        }
+      }
+    }
   },
-  apis: ['./src/routes/*.ts'], // Chemin vers vos fichiers de routes
+  apis: ['./src/routes/*.ts'] // Chemin vers vos fichiers de routes
 }
 
 const swaggerSpec = swaggerJSDoc(options)

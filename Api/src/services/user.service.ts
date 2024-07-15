@@ -11,8 +11,8 @@ export class UserService {
     return this.prisma.user.create({
       data: {
         firebase_id,
-        email,
-      },
+        email
+      }
     })
   }
 
@@ -22,13 +22,13 @@ export class UserService {
   ): Promise<User | null> {
     return this.prisma.user.update({
       where: { id },
-      data: updateData,
+      data: updateData
     })
   }
 
   async getUserById(id: string): Promise<User | null> {
     return this.prisma.user.findUnique({
-      where: { id },
+      where: { id }
     })
   }
 }

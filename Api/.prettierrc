@@ -7,7 +7,7 @@
     "proseWrap": "always",
     "printWidth": 80,
     "useTabs": false,
-    "trailingComma": "es5",
+    "trailingComma": "none",
     "bracketSpacing": true,
     "endOfLine": "auto"
   }
