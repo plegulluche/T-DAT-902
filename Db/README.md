@@ -27,7 +27,7 @@ python -m venv local
         $ source local/bin/activate
 ```
 
-### Install depedencies
+### Install depedencies (you have to be located on the dbt folder)
 
 ```
 pip install -r requirements.txt
