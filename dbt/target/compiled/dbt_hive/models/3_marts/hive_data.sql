@@ -1,1 +1,0 @@
-select * from "hive"."atlas_INTERMEDIARY"."int_hive__hive_data"
