@@ -12,12 +12,12 @@ export function convertPriceEvolution(data: any[]): PriceEvolutionItem[] {
   }))
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function convertLastSales(data: any[]): SaleItem[] {
-  return data.map(item => ({
-    date_mutation: new Date(item.date_mutation),
-    valeur_fonciere: convertBigIntToNumber(item.valeur_fonciere),
-    nombre_pieces_principales: Number(item.nombre_pieces_principales),
-    surface_reelle_bati: Number(item.surface_reelle_bati),
-    type_local: String(item.type_local)
+export const convertLastSales = (lastSalesRaw: any[]): SaleItem[] => {
+  return lastSalesRaw.map(sale => ({
+    date_mutation: sale.date_mutation,
+    total_valeur_fonciere: Number(sale.total_valeur_fonciere),
+    total_pieces: Number(sale.total_pièces ?? 0),
+    max_surface_reelle_bati: Number(sale.max_surface_reelle_bati ?? 0),
+    type_local_or_lot: sale.type_local_or_lot ?? 'N/A'
   }))
 }

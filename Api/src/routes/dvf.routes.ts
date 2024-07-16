@@ -8,6 +8,8 @@ const router = express.Router()
  * /api/dvf/price-evolution:
  *   get:
  *     summary: Récupère l'évolution des prix et les dernières ventes pour un code INSEE ou un code département donné
+ *     tags:
+ *       - DVF
  *     parameters:
  *       - name: inseeCode
  *         in: query
@@ -94,6 +96,69 @@ const router = express.Router()
  *         description: Erreur interne du serveur
  */
 router.get('/price-evolution', getDvfData)
-router.get('/stats/:location', getCityOrDepartmentStatsController)
+
+/**
+ * @swagger
+ * /api/dvf/stats/{inseeCode}:
+ *   get:
+ *     summary: Récupère les statistiques mensuelles des ventes immobilières pour une commune donnée
+ *     tags:
+ *       - DVF
+ *     parameters:
+ *       - in: path
+ *         name: inseeCode
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Code INSEE de la commune
+ *         example: "01001"
+ *     responses:
+ *       200:
+ *         description: Statistiques mensuelles des ventes immobilières
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 monthlyStats:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       month:
+ *                         type: string
+ *                         format: date-time
+ *                         description: Mois des statistiques
+ *                       averagePrice:
+ *                         type: number
+ *                         description: Prix moyen des ventes pour le mois
+ *                       maxPrice:
+ *                         type: number
+ *                         description: Prix maximum des ventes pour le mois
+ *                       minPrice:
+ *                         type: number
+ *                         description: Prix minimum des ventes pour le mois
+ *       400:
+ *         description: Paramètre inseeCode manquant
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: INSEE code parameter is required
+ *       500:
+ *         description: Erreur interne du serveur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: An error occurred while processing the request
+ */
+router.get('/stats/:inseeCode', getCityOrDepartmentStatsController)
 
 export default router

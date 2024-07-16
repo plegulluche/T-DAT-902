@@ -68,7 +68,11 @@ export class RecentResearchController {
       const { userId } = req.params
       const recentResearches =
         await this.recentResearchService.getRecentResearchByUserId(userId)
-      res.json(recentResearches)
+      if (recentResearches.length > 0) {
+        res.json(recentResearches)
+      } else {
+        res.status(404).json({ error: 'No recent research found for the user' })
+      }
     } catch (error) {
       res.status(500).json({ error: 'Internal server error' })
     }
