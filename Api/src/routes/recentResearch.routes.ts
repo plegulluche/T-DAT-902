@@ -106,7 +106,7 @@ const recentResearchController = new RecentResearchController(
  *         description: Recherche récente non trouvée
  *       500:
  *         description: Erreur serveur
- * /api/user/{userId}/recent-search:
+ * /api/user/recent-search/{userId}:
  *   get:
  *     summary: Obtenir les recherches récentes d'un utilisateur
  *     tags: [RecentResearch]
@@ -142,7 +142,7 @@ router.put('/:id', (req, res) =>
 router.delete('/:id', (req, res) =>
   recentResearchController.deleteRecentResearch(req, res)
 )
-router.get('/user/:userId', (req, res) =>
+router.get('/history/:userId', (req, res) =>
   recentResearchController.getRecentResearchByUserId(req, res)
 )
 

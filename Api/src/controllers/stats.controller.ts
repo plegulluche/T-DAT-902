@@ -6,13 +6,11 @@ export const getCityOrDepartmentStatsController = async (
   res: Response
 ) => {
   try {
-    const { location } = req.params
-
-    if (!location) {
-      return res.status(400).json({ error: 'Location parameter is required' })
+    const { inseeCode } = req.params
+    if (!inseeCode) {
+      return res.status(400).json({ error: 'INSEE code parameter is required' })
     }
-
-    const result = await getCityOrDepartmentStats(location)
+    const result = await getCityOrDepartmentStats(inseeCode)
     res.json(result)
   } catch (error) {
     console.error('Error in getCityOrDepartmentStats:', error)

@@ -29,6 +29,11 @@ export class RecentResearchService {
   }
 
   async getRecentResearchByUserId(userId: string): Promise<RecentResearch[]> {
-    return this.prisma.recentResearch.findMany({ where: { user_id: userId } })
+    console.log('User ID:', userId)
+    const recentResearches = await this.prisma.recentResearch.findMany({
+      where: { user_id: userId }
+    })
+    console.log('Recent Researches:', recentResearches)
+    return recentResearches
   }
 }
