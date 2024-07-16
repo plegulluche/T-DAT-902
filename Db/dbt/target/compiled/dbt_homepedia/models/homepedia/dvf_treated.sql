@@ -1,14 +1,4 @@
 
-  
-    
-
-  create  table "homepedia"."homepedia_marts"."dvf_treated__dbt_tmp"
-  
-  
-    as
-  
-  (
-    
 
 WITH source_data AS (
     SELECT
@@ -47,5 +37,3 @@ SELECT
     *
 FROM
     source_data
-  );
-  

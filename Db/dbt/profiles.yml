@@ -2,20 +2,20 @@ homepedia:
   outputs:
     dev:
       type: postgres
-      host: "{{ env_var('DBT_DEV_HOST') }}"
-      user: "{{ env_var('DBT_DEV_USER') }}"
-      pass: "{{ env_var('DBT_DEV_PASS') }}"
-      port: "{{ env_var('DBT_DEV_PORT') | as_number }}"
-      dbname: "{{ env_var('DBT_DEV_DBNAME') }}"
-      schema: "{{ env_var('DBT_DEV_SCHEMA') }}"
+      host: "{{ env_var('DB_HOST') }}"
+      user: "{{ env_var('DB_USER') }}"
+      pass: "{{ env_var('DB_PASSWORD') }}"
+      port: "{{ env_var('DB_PORT') | as_number }}"
+      dbname: "{{ env_var('DB_NAME') }}"
+      schema: "{{ env_var('DB_SCHEMA') }}"
       threads: 1
     local:
       type: postgres
-      host: "{{ env_var('DBT_DEV_HOST') }}"
-      user: "{{ env_var('DBT_DEV_USER') }}"
-      pass: "{{ env_var('DBT_DEV_PASS') }}"
-      port: "{{ env_var('DBT_DEV_PORT') | as_number }}"
-      dbname: "{{ env_var('DBT_DEV_DBNAME') }}"
-      schema: "{{ env_var('DBT_LOCAL_SCHEMA') }}"
+      host: "{{ env_var('DB_HOST') }}"
+      user: "{{ env_var('DB_USER') }}"
+      pass: "{{ env_var('DB_PASSWORD') }}"
+      port: "{{ env_var('DB_PORT') | as_number }}"
+      dbname: "{{ env_var('DB_NAME') }}"
+      schema: "{{ env_var('DB_SCHEMA') }}"
       threads: 1
   target: local

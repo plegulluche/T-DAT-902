@@ -13,9 +13,8 @@ models:
     1_staging:
       +materialized: table
       +schema: staging
-    2_intermediate:
+    homepedia:
       +materialized: table
-      +schema: intermediary
-    3_marts:
-      +materialized: table
-      +schema: marts
+      dvf_treated:
+        post-hook:
+          - "ALTER TABLE {{ this }} ADD PRIMARY KEY (id);"

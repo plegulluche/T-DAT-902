@@ -2,7 +2,7 @@
   
     
 
-  create  table "homepedia"."homepedia_marts"."dvf_treated__dbt_tmp"
+  create  table "homepedia"."homepedia"."dvf_treated__dbt_tmp"
   
   
     as
