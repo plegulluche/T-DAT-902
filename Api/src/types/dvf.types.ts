@@ -1,13 +1,13 @@
-export interface PriceEvolutionItem {
+export type PriceEvolutionItem = {
   month: Date
   average_price: number
   sales_count: number
 }
 
-export interface SaleItem {
+export type SaleItem = {
   date_mutation: Date
-  valeur_fonciere: number
-  nombre_pieces_principales: number
-  surface_reelle_bati: number
-  type_local: string
+  total_valeur_fonciere: number
+  total_pieces: number
+  max_surface_reelle_bati: number
+  type_local_or_lot: string
 }
