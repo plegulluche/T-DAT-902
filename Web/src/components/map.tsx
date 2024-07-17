@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import RecentSales from "./recentSales";
 import Chart from "./chart";
 import axios from "axios";
+import Header from "./header";
 // import axios from "axios";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF0aGlldWJsYWlzIiwiYSI6ImNrZjZneDRmdDB3bG4yeHA5ZHN5NDNsYm0ifQ.0-ZZSb86hkNjwGqMJEiF2Q';
@@ -28,33 +29,6 @@ const tab2:any = [
   {"?": "0,5000000"},
 ]
 
-function Header() {
-  const department = localStorage.getItem('departement');
-  const budget = localStorage.getItem('budget');
-  const household = localStorage.getItem('household');
-
-  return (
-    <div className="h-10 mb-4 flex items-center gap-10">
-        <p className="text-black font-semibold text-xl">Interactiv Map</p>
-        <div className="text-black/50 flex gap-5 items-center">
-          <div className="h-full py-1 px-3 rounded border border-gray-300 flex gap-2 items-center">
-            <Group width={16} height={16} strokeWidth={2} />
-            <p className="text-sm">{household}</p>
-          </div>
-
-          <div className="h-full py-1 px-3 rounded border border-gray-300 flex gap-2 items-center">
-            <Coins width={16} height={16} strokeWidth={2} />
-            <p className="text-sm">{budget}</p>
-          </div>
-
-          <div className="h-full py-1 px-3 rounded border border-gray-300 flex gap-2 items-center">
-            <MapPin width={16} height={16} strokeWidth={2} />
-            <p className="text-sm">{department}</p>
-          </div>
-        </div>
-    </div>
-  )
-}
 
 const Map: React.FC = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -298,7 +272,7 @@ const Map: React.FC = () => {
   return (
     <div>
       <div className="bg-white rounded-lg p-5 flex flex-col border-2 border-gray-200" style={{height: '95dvh'}}>
-        <Header />
+        <Header label={label}/>
         <div className="h-full flex gap-6 overflow-hidden">
           <div ref={mapContainerRef} className="rounded-md border-2 border-gray-200 overflow-hidden w-2/3" style={{  height: '100%' }}/>
           <div className="w-1/3 rounded-lg flex flex-col gap-5">

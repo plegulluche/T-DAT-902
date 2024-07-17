@@ -13,7 +13,7 @@ export default function RecentSales(props: {data: {date_mutation: string, total_
             <div key={index} className="grid grid-cols-3 px-2 border-b py-2 text-black/60 text-xs">
               <p>{moment(el.date_mutation).format("DD/MM/YYYY")}</p>
               <p>{el.total_pieces} pieces</p>
-              <p>{el.total_valeur_fonciere} €</p>
+              <p>{new Intl.NumberFormat('fr-FR').format(el.total_valeur_fonciere)} €</p>
             </div>
           ))}
         </div>
