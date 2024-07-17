@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
 const Profile: React.FC = () => {
     const [name, setName] = useState('');
@@ -13,6 +12,7 @@ const Profile: React.FC = () => {
   
     const handleProfileUpdate = (e: React.FormEvent) => {
       e.preventDefault();
+      setSearchHistory([...searchHistory]);
       //axios call ici changer le nom / username / profilePicture
       console.log('Name:', name, 'Username:', username, 'Profile Picture:', profilePicture);
     };

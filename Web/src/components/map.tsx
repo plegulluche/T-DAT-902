@@ -1,4 +1,3 @@
-import { Coins, Group, MapPin } from "iconoir-react";
 import mapboxgl from "mapbox-gl";
 import { useEffect, useRef, useState } from "react";
 import RecentSales from "./recentSales";
