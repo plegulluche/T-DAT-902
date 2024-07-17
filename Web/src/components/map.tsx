@@ -4,7 +4,7 @@ import RecentSales from "./recentSales";
 import Chart from "./chart";
 import axios from "axios";
 import Header from "./header";
-// import axios from "axios";
+import M2Price from "./m2Price";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF0aGlldWJsYWlzIiwiYSI6ImNrZjZneDRmdDB3bG4yeHA5ZHN5NDNsYm0ifQ.0-ZZSb86hkNjwGqMJEiF2Q';
 
@@ -36,6 +36,12 @@ const Map: React.FC = () => {
   const [label, setLabel] = useState<string>();
   const [data, setData] = useState<any>([]);
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    axios.get(`http://localhost:3000/api/squaremeteraverages/year/2023`).then((response) => {
+      console.log(response.data)
+    })
+  }, []);
 
   useEffect(() => {
     if (selectedDepartmentId) {
@@ -136,7 +142,6 @@ const Map: React.FC = () => {
           },
           maxzoom: 8
         });
-       
 
         map.addLayer({
           id: 'departements-borders',
@@ -266,7 +271,7 @@ const Map: React.FC = () => {
               :
               <Chart data={data?.priceEvolution}/>}
             </div>
-            <div className="min-h-[370px] border-2 border-gray-200 rounded-md overflow-hidden w-full p-3">
+            <div className="min-h-[240px] max-h-[240px] border-2 border-gray-200 rounded-md overflow-hidden w-full p-3">
               <p className="text-black/80 font-semibold text-sm">Recent sales on {label}</p>
               {loading ? 
                 <div className="h-full flex items-center justify-center w-full text-black">
@@ -277,6 +282,7 @@ const Map: React.FC = () => {
                 <RecentSales data={data?.lastSales} label={label}/>
               </div>}
             </div>
+            <M2Price label={label} selectedCity={selectedCity} selectedDepartmentId={selectedDepartmentId}/>
           </div>
         </div>
       </div>
