@@ -102,6 +102,8 @@ export const getPrixMoyenM2FromCache = async (): Promise<
 
 export const calculerEtCacherPrixMoyenM2 = async (): Promise<void> => {
   try {
+    // Effacer le document existant
+    await PrixMoyenDepartement.deleteMany({})
     const resultat = await calculerPrixMoyenM2()
 
     await PrixMoyenDepartement.findOneAndUpdate(
@@ -114,13 +116,13 @@ export const calculerEtCacherPrixMoyenM2 = async (): Promise<void> => {
           prix_moyen_m2: item.prix_moyen_m2
         }))
       },
-      { upsert: true, new: true, maxTimeMS: 30000 } // Augmente le délai d'attente à 30 secondes
+      { upsert: true, new: true, maxTimeMS: 30000 }
     )
   } catch (error) {
     console.error(
       'Erreur lors de la mise à jour des données dans MongoDB:',
       error
     )
-    throw error // Propagez l'erreur pour la gérer dans startApp
+    throw error
   }
 }

@@ -7,6 +7,8 @@ import swaggerSpec from './config/swagger'
 import userRoutes from './routes/user.routes'
 import dvfRoutes from './routes/dvf.routes'
 import prixMoyenRoutes from './routes/prixMoyen.route'
+import squareMeterAveragesRoutes from './routes/squareMeterAverages.routes'
+
 import recentResearchRoutes from './routes/recentResearch.routes'
 import { PrismaClient } from '@prisma/client'
 import { calculerEtCacherPrixMoyenM2 } from './services/prixMoyen.service'
@@ -38,6 +40,7 @@ app.use('/api/users', userRoutes)
 app.use('/api/dvf', dvfRoutes)
 app.use('/api/user/recent-search', recentResearchRoutes)
 app.use('/api', prixMoyenRoutes)
+app.use('/api/squaremeteraverages', squareMeterAveragesRoutes)
 
 const PORT = process.env.PORT || 3000
 
