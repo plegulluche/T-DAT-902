@@ -7,107 +7,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model dvf_data {
-  id                         Int       @id @default(autoincrement())
-  No_disposition             Int?      @map("No disposition")
-  Date_mutation              DateTime? @map("Date mutation") @db.Date
-  Nature_mutation            String?   @map("Nature mutation") @db.VarChar(50)
-  Valeur_fonciere            Int?      @map("Valeur fonciere")
-  No_voie                    Int?      @map("No voie")
-  B_T_Q                      String?   @map("B/T/Q") @db.VarChar(10)
-  Type_de_voie               String?   @map("Type de voie") @db.VarChar(50)
-  Code_voie                  String?   @map("Code voie") @db.VarChar(10)
-  Voie                       String?   @db.VarChar(100)
-  Code_postal                Int?      @map("Code postal")
-  Commune                    String?   @db.VarChar(100)
-  Code_departement           String?   @map("Code departement") @db.VarChar(10)
-  Code_commune               Int?      @map("Code commune")
-  Prefixe_de_section         Float?    @map("Prefixe de section")
-  Section                    String?   @db.VarChar(10)
-  No_plan                    Int?      @map("No plan")
-  No_Volume                  String?   @map("No Volume") @db.VarChar(50)
-  er_lot                     String?   @map("1er lot") @db.VarChar(50)
-  Surface_Carrez_du_1er_lot  String?   @map("Surface Carrez du 1er lot") @db.VarChar(50)
-  eme_lot                    String?   @map("2eme lot") @db.VarChar(50)
-  Surface_Carrez_du_2eme_lot String?   @map("Surface Carrez du 2eme lot") @db.VarChar(50)
-  deuxieme_lot                    String?   @map("3eme lot") @db.VarChar(50)
-  Surface_Carrez_du_3eme_lot String?   @map("Surface Carrez du 3eme lot") @db.VarChar(50)
-  troisieme_lot                    String?   @map("4eme lot") @db.VarChar(50)
-  Surface_Carrez_du_4eme_lot String?   @map("Surface Carrez du 4eme lot") @db.VarChar(50)
-  quatrieme_lot                    String?   @map("5eme lot") @db.VarChar(50)
-  Surface_Carrez_du_5eme_lot String?   @map("Surface Carrez du 5eme lot") @db.VarChar(50)
-  Nombre_de_lots             Int?      @map("Nombre de lots")
-  Code_type_local            Int?      @map("Code type local")
-  Type_local                 String?   @map("Type local") @db.VarChar(50)
-  Identifiant_local          Float?    @map("Identifiant local")
-  Surface_reelle_bati        Int?      @map("Surface reelle bati")
-  Nombre_pieces_principales  Int?      @map("Nombre pieces principales")
-  Nature_culture             String?   @map("Nature culture") @db.VarChar(50)
-  Nature_culture_speciale    String?   @map("Nature culture speciale") @db.VarChar(50)
-  Surface_terrain            Int?      @map("Surface terrain")
+model RecentResearch {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  user_id    String
+  roomMin    Int
+  roomMax    Int
+  priceMin   Int
+  priceMax   Int
+  department Int
+  User       User     @relation(fields: [user_id], references: [id])
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model stg_dvf {
-  id                         Int?
-  no_disposition             Int?
-  date_mutation              DateTime? @db.Date
-  nature_mutation            String?   @db.VarChar(50)
-  valeur_fonciere            BigInt?
-  no_voie                    Int?
-  b_t_q                      String?   @db.VarChar(10)
-  type_de_voie               String?   @db.VarChar(50)
-  code_voie                  String?   @db.VarChar(10)
-  voie                       String?   @db.VarChar(100)
-  code_postal                Int?
-  commune                    String?   @db.VarChar(100)
-  code_departement           String?   @db.VarChar(10)
-  code_commune               Int?
-  prefixe_de_section         Float?
-  section                    String?   @db.VarChar(10)
-  no_plan                    Int?
-  no_volume                  String?   @db.VarChar(50)
-  premier_lot                String?   @db.VarChar(50)
-  surface_carrez_du_1er_lot  Decimal?  @db.Decimal
-  deuxieme_lot               String?   @db.VarChar(50)
-  surface_carrez_du_2eme_lot Decimal?  @db.Decimal
-  troiseme_lot               String?   @db.VarChar(50)
-  surface_carrez_du_3eme_lot Decimal?  @db.Decimal
-  quatrieme_lot              String?   @db.VarChar(50)
-  surface_carrez_du_4eme_lot Decimal?  @db.Decimal
-  cinquieme_lot              String?   @db.VarChar(50)
-  surface_carrez_du_5eme_lot Decimal?  @db.Decimal
-  nombre_de_lots             Int?
-  code_type_local            Int?
-  type_local                 String?   @db.VarChar(50)
-  surface_reelle_bati        Int?
-  nombre_pieces_principales  Int?
-  nature_culture             String?   @db.VarChar(50)
-  nature_culture_speciale    String?   @db.VarChar(50)
-  surface_terrain            Int?
-
-  @@ignore
-}
-
-// Ajouter champs image : String et 
 model User {
   id             String           @id @default(uuid())
   firebase_id    String           @unique
   email          String           @unique
   name           String?
   firstname      String?
-  recentResearch RecentResearch[]
+  RecentResearch RecentResearch[]
 }
 
-model RecentResearch {
-  id         String   @id @default(uuid())
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  user_id    String
-  user       User     @relation(fields: [user_id], references: [id])
-  roomMin    Int
-  roomMax    Int
-  priceMin   Int
-  priceMax   Int
-  department Int
+model dvf_treated {
+  id                      BigInt    @id
+  date_mutation           DateTime? @db.Date
+  no_voie                 Int?
+  voie                    String?   @db.VarChar(100)
+  commune                 String?   @db.VarChar(100)
+  code_postal             Int?
+  code_departement        String?   @db.VarChar(10)
+  code_commune            Int?
+  count_type_local        BigInt?
+  type_local_or_lot       String?
+  total_pieces            BigInt?   @map("total_pièces")
+  total_valeur_fonciere   Decimal?  @db.Decimal
+  max_surface_terrain     BigInt?
+  max_surface_reelle_bati BigInt?
 }
