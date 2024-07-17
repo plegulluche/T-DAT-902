@@ -28,7 +28,6 @@ function OnboardingHeader() {
     );
   }
 
-  
 function OnboardingStepContent({
   step,
   onValidateStep,

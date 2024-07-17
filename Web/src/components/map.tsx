@@ -8,6 +8,26 @@ import axios from "axios";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF0aGlldWJsYWlzIiwiYSI6ImNrZjZneDRmdDB3bG4yeHA5ZHN5NDNsYm0ifQ.0-ZZSb86hkNjwGqMJEiF2Q';
 
+
+const tab:any = [
+  {"1-2": "1,2"},
+  {"2-3": "2,3"},
+  {"3-4": "3,4"},
+  {"5-6": "5,6"},
+  {"6-10": "6,10"},
+  {"?": "1,20"},
+]
+
+const tab2:any = [
+  {"-100k": "0,100000"},
+  {"100-200k": "100000,200000"},
+  {"200-400k": "200000,400000"},
+  {"400-600k": "400000,600000"},
+  {"600k-1m": "600000,1000000"},
+  {"1m-5m": "1000000,5000000"},
+  {"?": "0,5000000"},
+]
+
 function Header() {
   const department = localStorage.getItem('departement');
   const budget = localStorage.getItem('budget');
@@ -40,26 +60,50 @@ const Map: React.FC = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [selectedDepartmentId, setSelectedDepartmentId] = useState<string | null>(localStorage.getItem('departement'));
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
+  const [label, setLabel] = useState<string>();
+  const [data, setData] = useState<any>([]);
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (selectedDepartmentId) {
-       axios.get(`http://localhost:3000/api/dvf/stats/${selectedDepartmentId}`).then((response) => {
-        console.log(response.data);
-       }
-       ).catch((error) => {
-         console.error('Error fetching properties:', error);
-       });
+      const pieces = localStorage.getItem('household');
+      const budget = localStorage.getItem('budget');
+      if (pieces && budget) {
+        const budgetTab = tab2.find((el:any) => el[budget]);
+        const value = budgetTab[budget];
+        const piecesTab = tab.find((el:any) => el[pieces]);
+        const value2 = piecesTab[pieces];
+        setLoading(true)
+        axios.get(`http://localhost:3000/api/dvf/price-evolution?departementCode=${selectedDepartmentId}&pieces=${value2}&budget=${value}`).then((response) => {
+          setData(response.data)
+          setLoading(false)
+        }
+      ).catch((error) => {
+        console.error('Error fetching properties:', error);
+      });
+    }
     }
   }, [selectedDepartmentId]);
 
   useEffect(() => {
     if (selectedCity) {
-      axios.get(`http://localhost:3000/api/dvf/stats/${selectedCity}`).then((response) => {
-        console.log(response.data);
-      }
-       ).catch((error) => {
-         console.error('Error fetching properties:', error);
-       });
+      const pieces = localStorage.getItem('household');
+      const budget = localStorage.getItem('budget');
+      if (pieces && budget) {
+        const budgetTab = tab2.find((el:any) => el[budget]);
+        const value = budgetTab[budget];
+        const piecesTab = tab.find((el:any) => el[pieces]);
+        const value2 = piecesTab[pieces];
+        setLoading(true)
+        axios.get(`http://localhost:3000/api/dvf/price-evolution?inseeCode=${selectedCity}&pieces=${value2}&budget=${value}`).then((response) => {
+          console.log(response.data);
+          setData(response.data)
+          setLoading(false)
+        }
+      ).catch((error) => {
+        console.error('Error fetching properties:', error);
+      });
+    }
     }
   }, [selectedCity]);
 
@@ -229,6 +273,8 @@ const Map: React.FC = () => {
           if (e.features && e.features.length > 0) {
             const clickedFeature = e.features[0];
             setSelectedDepartmentId(clickedFeature.properties?.code as string);
+            console.log(clickedFeature.properties);
+            setLabel(clickedFeature.properties?.nom as string);
             map.setFilter('departements-selected', ['==', 'code', clickedFeature.properties?.code as string]);
           }
         });
@@ -237,6 +283,7 @@ const Map: React.FC = () => {
           if (e.features && e.features.length > 0) {
             const clickedFeature = e.features[0];
             setSelectedCity(clickedFeature.properties?.code as string);
+            setLabel(clickedFeature.properties?.nom as string);
             map.setFilter('city-selected', ['==', 'code', clickedFeature.properties?.code as string]);
           }
         });
@@ -255,13 +302,25 @@ const Map: React.FC = () => {
         <div className="h-full flex gap-6 overflow-hidden">
           <div ref={mapContainerRef} className="rounded-md border-2 border-gray-200 overflow-hidden w-2/3" style={{  height: '100%' }}/>
           <div className="w-1/3 rounded-lg flex flex-col gap-5">
-            <div className="h-60 border-2 border-gray-200 rounded-md overflow-hidden w-full p-3">
-              <p className="text-black/80 font-semibold text-sm">Price evolution</p>
-              <Chart />
+            <div className="min-h-60 border-2 border-gray-200 rounded-md overflow-hidden w-full p-3">
+              <p className="text-black/80 font-semibold text-sm">Price evolution on {label}</p>
+              {loading ? 
+                <div className="h-full flex items-center justify-center w-full text-black">
+                  loading...
+                </div>
+              :
+              <Chart data={data?.priceEvolution}/>}
             </div>
-            <div className="h-84 border-2 border-gray-200 rounded-md overflow-hidden w-full p-3">
-            <p className="text-black/80 font-semibold text-sm">Recent sales</p>
-              <RecentSales />
+            <div className="min-h-[370px] border-2 border-gray-200 rounded-md overflow-hidden w-full p-3">
+              <p className="text-black/80 font-semibold text-sm">Recent sales on {label}</p>
+              {loading ? 
+                <div className="h-full flex items-center justify-center w-full text-black">
+                  loading...
+                </div>
+              :
+              <div className="h-full">
+                <RecentSales data={data?.lastSales} label={label}/>
+              </div>}
             </div>
           </div>
         </div>

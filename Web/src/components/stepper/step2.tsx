@@ -28,11 +28,11 @@ export default function Step2({
           <section className="flex flex-wrap gap-4">
             <CountCard count={"-100k"} onClick={() => onSelect("-100k")} selected={selected}/>
             <CountCard count={"100-200k"} onClick={() => onSelect("100-200k")} selected={selected}/>
-            <CountCard count={"200-300k"} onClick={() => onSelect("200-300k")} selected={selected}/>
-            <CountCard count={"300-400k"} onClick={() => onSelect("300-400k")} selected={selected}/>
+            <CountCard count={"200-400k"} onClick={() => onSelect("200-400k")} selected={selected}/>
             <CountCard count={"400-600k"} onClick={() => onSelect("400-600k")} selected={selected}/>
-            <CountCard count={"+600k"} onClick={() => onSelect("+600k")} selected={selected}/>
-            <CountCard count={"+1m"} onClick={() => onSelect("+1m")} selected={selected}/>
+            <CountCard count={"600k-1m"} onClick={() => onSelect("600k-1m")} selected={selected}/>
+            <CountCard count={"1m-5m"} onClick={() => onSelect("1m-5m")} selected={selected}/>
+            <CountCard count={"?"} onClick={() => onSelect("?")} selected={selected}/>
           </section>
         </div>
         <div className="w-full mt-4 flex justify-end">

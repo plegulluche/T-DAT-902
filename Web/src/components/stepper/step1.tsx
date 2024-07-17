@@ -24,14 +24,15 @@ export default function Step1({
 
   return (
     <div className="xl:w-3/4 w-full h-full flex flex-col justify-center px-10">
-      <p className="text-3xl mb-8 font-semibold text-black">Combien de membres comporte <br/>votre foyer ?</p>
+      <p className="text-3xl mb-8 font-semibold text-black">Combien de pieces <br/>voulez-vous ?</p>
         <div className=" padding">
           <section className="flex flex-wrap gap-4">
-            <CountCard count={"1"} onClick={() => onSelect("1")} selected={selected}/>
+            <CountCard count={"1-2"} onClick={() => onSelect("1-2")} selected={selected}/>
             <CountCard count={"2-3"} onClick={() => onSelect("2-3")} selected={selected}/>
             <CountCard count={"3-4"} onClick={() => onSelect("3-4")} selected={selected}/>
             <CountCard count={"5-6"} onClick={() => onSelect("5-6")} selected={selected}/>
-            <CountCard count={"6+"} onClick={() => onSelect("6+")} selected={selected}/>
+            <CountCard count={"6-10"} onClick={() => onSelect("6-10")} selected={selected}/>
+            <CountCard count={"?"} onClick={() => onSelect("?")} selected={selected}/>
           </section>
         </div>
         <div className="w-full mt-4 flex justify-end">
