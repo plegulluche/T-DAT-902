@@ -9,6 +9,7 @@ import dvfRoutes from './routes/dvf.routes'
 import prixMoyenRoutes from './routes/prixMoyen.route'
 import squareMeterAveragesRoutes from './routes/squareMeterAverages.routes'
 import cityAverageSquareMeterRoutes from './routes/cityAveragesSquareMeter.route'
+import cityAveragesByInseeRoutes from './routes/cityAverageByInsee.route'
 import recentResearchRoutes from './routes/recentResearch.routes'
 import { PrismaClient } from '@prisma/client'
 import { calculerEtCacherPrixMoyenM2 } from './services/prixMoyen.service'
@@ -43,6 +44,7 @@ app.use('/api/user/recent-search', recentResearchRoutes)
 app.use('/api', prixMoyenRoutes)
 app.use('/api/squaremeteraverages', squareMeterAveragesRoutes)
 app.use('/api/city-averages', cityAverageSquareMeterRoutes)
+app.use('/api/city-averages-by-insee', cityAveragesByInseeRoutes)
 
 const PORT = process.env.PORT || 3000
 
