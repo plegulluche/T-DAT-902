@@ -85,7 +85,7 @@ const Map: React.FC = () => {
     if (mapContainerRef.current) {
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
-        style: 'mapbox://styles/mapbox/streets-v11',
+        style: 'mapbox://styles/mapbox/streets-v12',
         center: [2.2137, 46.2276],
         zoom: 5
       });
@@ -94,11 +94,6 @@ const Map: React.FC = () => {
         map.addSource('departements', {
           type: 'geojson',
           data: '/departements.geojson'
-        });
-
-        map.addSource('regions', {
-          type: 'geojson',
-          data: '/regions.geojson'
         });
 
         map.addSource('villes', {
@@ -150,24 +145,11 @@ const Map: React.FC = () => {
           source: 'departements',
           layout: {},
           paint: {
-            'line-color': '#1E5F8E',
-            'line-width': 3
+            'line-color': '#4D4D4D',
+            'line-width': 1.5
           },
           
         });
-
-       /* map.addLayer({
-          id: 'region-borders',
-          type: 'line',
-          source: 'regions',
-          layout: {},
-          paint: {
-            'line-color': '#565656',
-            'line-width': 2
-          },
-          minzoom: 3,
-          maxzoom: 5.5
-        });*/
 
         map.addLayer({
           id: 'departements-hover',
@@ -176,7 +158,7 @@ const Map: React.FC = () => {
           layout: {},
           paint: {
             'fill-color': '#FF5733',
-            'fill-opacity': 0.5
+            'fill-opacity': 0
           },
           filter: ['==', 'code', ''],
           maxzoom: 8

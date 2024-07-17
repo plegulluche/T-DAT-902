@@ -1,4 +1,4 @@
-import { Coins, Group, MapPin } from "iconoir-react";
+import { Coins, Group, MapPin, NavArrowDown } from "iconoir-react";
 import { useState } from "react";
 
 function CountCard1(props: { count: string, onClick: () => void, selected: string}) {
@@ -44,7 +44,7 @@ export default function Header(props: {label: string | undefined}) {
             <div className="h-full py-1 px-3 rounded border border-gray-300 flex gap-2 items-center hover:cursor-pointer hover:bg-gray-100 relative" onClick={() => setOpen1(!open1)}>
             {open1 && (
                 <div className="absolute z-50 top-8 w-44 left-0 bg-white rounded-lg border border-gray-300 p-3 shadow-lg flex flex-wrap gap-3">
-                    <p className="text-black font-semibold">Pieces</p>
+                    <p className="text-black text-sm font-semibold">Rooms</p>
                     <div className="flex flex-wrap gap-3">
                         <CountCard1 count={"1-2"} onClick={() => onChange("1-2")} selected={household}/>
                         <CountCard1 count={"2-3"} onClick={() => onChange("2-3")} selected={household}/>
@@ -57,12 +57,13 @@ export default function Header(props: {label: string | undefined}) {
             )}
               <Group width={16} height={16} strokeWidth={2} />
               <p className="text-sm">{household}</p>
+              <NavArrowDown width={16} height={16} strokeWidth={2} />
             </div>
   
             <div className="h-full py-1 px-3 rounded border border-gray-300 flex gap-2 items-center hover:cursor-pointer hover:bg-gray-100 relative" onClick={() => setOpen2(!open2)}>
             {open2 && (
                 <div className="absolute z-50 top-8 w-60 left-0 bg-white rounded-lg border border-gray-300 p-3 shadow-lg flex flex-wrap gap-3">
-                    <p className="text-black font-semibold">Budget</p>
+                    <p className="text-black text-sm font-semibold">Budget</p>
                     <div className="flex flex-wrap gap-3">
                         <CountCard2 count={"-100k"} onClick={() => onChangeBudget("-100k")} selected={budget}/>
                         <CountCard2 count={"100-200k"} onClick={() => onChangeBudget("100-200k")} selected={budget}/>
@@ -76,6 +77,7 @@ export default function Header(props: {label: string | undefined}) {
             )}
               <Coins width={16} height={16} strokeWidth={2} />
               <p className="text-sm">{budget}</p>
+              <NavArrowDown width={16} height={16} strokeWidth={2} />
             </div>
   
             <div className="h-full py-1 px-3 rounded border border-gray-300 flex gap-2 items-center">

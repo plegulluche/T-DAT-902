@@ -18,9 +18,9 @@ const Profile: React.FC = () => {
     };
   
     return (
-      <div className="min-h-screen bg-gray-100 p-5 flex flex-col items-center">
-        <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg mb-4">
-          <h2 className="text-2xl font-bold mb-8 text-black">My Profile</h2>
+      <div className="min-h-screen p-5 flex flex-col items-center">
+        <div className="bg-white rounded-lg border-2 border-gray-200 p-5 w-full max-w-lg mb-4">
+          <h2 className="text-xl font-semibold mb-8 text-black">My Profile</h2>
           <form onSubmit={handleProfileUpdate} className="space-y-6">
             <div className="mb-4">
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
@@ -61,8 +61,8 @@ const Profile: React.FC = () => {
             <button type="submit" className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Update Profile</button>
           </form>
         </div>
-        <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg">
-          <h2 className="text-2xl font-bold mb-6 text-black">Search History</h2>
+        <div className="bg-white rounded-lg rounded-lg border-2 border-gray-200 p-5 w-full max-w-lg">
+          <h2 className="text-xl font-semibold mb-6 text-black">Search History</h2>
           <ul className="space-y-2">
             {searchHistory.map((search, index) => (
               <li key={index} className="text-gray-700">{search}</li>
