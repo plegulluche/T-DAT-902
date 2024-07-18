@@ -2,7 +2,7 @@ import moment from "moment";
 
 export default function RecentSales(props: {data: {date_mutation: string, total_pieces: number, total_valeur_fonciere: number}[], label: string | undefined}) {
     return (
-      <div className="mt-3 overflow-y-auto h-full">
+      <div className="mt-3 overflow-y-auto h-full w-full">
         <div className="grid grid-cols-3 px-2 border-b pb-1.5">
           <p className="text-xs text-black/30 border-r mr-3">Date</p>
           <p className="text-xs text-black/30 border-r mr-3">Pieces</p>
