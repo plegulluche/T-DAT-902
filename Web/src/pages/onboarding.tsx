@@ -5,6 +5,7 @@ import Step3 from "../components/stepper/step3";
 import { useNavigate } from "react-router";
 import OnboardingStepper from "../components/stepper/onboardingStepper";
 import { OnboardingStepperInformations } from "../components/stepper/stepperInformations";
+import axios from "axios";
 
 function OnboardingHeader() {
     return (
@@ -61,12 +62,60 @@ enum StepType {
 export default function Onboarding({
 }: {
 }) {
+  const tab:any = [
+    {"1-2": "1,2"},
+    {"2-3": "2,3"},
+    {"3-4": "3,4"},
+    {"5-6": "5,6"},
+    {"6-10": "6,10"},
+    {"?": "1,20"},
+  ]
+  
+  const tab2:any = [
+    {"-100k": "0,100000"},
+    {"100-200k": "100000,200000"},
+    {"200-400k": "200000,400000"},
+    {"400-600k": "400000,600000"},
+    {"600k-1m": "600000,1000000"},
+    {"1m-5m": "1000000,5000000"},
+    {"?": "0,5000000"},
+  ]
   const labels = ["Foyer", "Budget", "Localisation"];
   const [step, setStep] = useState<StepType>(StepType.FOYER);
   const navigate = useNavigate()
 
   const onValidateStep = () => {
-    if (step === StepType.LOCALISATION) navigate("/map")
+    if (step === StepType.LOCALISATION) {
+      var user = localStorage.getItem('user');
+      if (user) {
+        var userObject = JSON.parse(user);
+        var id = userObject.id;
+      }
+      const pieces = localStorage.getItem('household');
+      const budget = localStorage.getItem('budget');
+      const department = localStorage.getItem('departement');
+      if (pieces && budget && department) {
+        const budgetTab = tab2.find((el:any) => el[budget]);
+        const value = budgetTab[budget].split(',');
+        const piecesTab = tab.find((el:any) => el[pieces]);
+        const value2 = piecesTab[pieces].split(',');
+        axios.post('http://localhost:3000/api/user/recent-search', {
+          user_id: id,
+          priceMin: +value[0],
+          priceMax: +value[1],
+          roomMin: +value2[0],
+          roomMax: +value2[1],
+          department: +department
+        }).then((response) => {
+          console.log('Recent search added:', response.data);
+        }).catch((error) => {
+          console.error('Error registering:', error);
+          alert((error as Error).message);
+        }
+        )
+      }
+      navigate("/map")
+    }
     setStep((prev) => prev + 1);
   };
 

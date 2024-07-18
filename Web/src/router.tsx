@@ -13,12 +13,40 @@ import RegisterPage from "./pages/register";
 import ProfilePage from "./pages/profile.page";
 import ComparePage from "./pages/compare";
 import { useEffect } from "react";
+import { useState } from "react";
 
 function LeftMenu() {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [name, setName] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
+  const [profilePicture, setProfilePicture] = useState<string>('');
 
-  const onDisconnect = () => {
+  useEffect(() => {
+    const updateUserFromLocalStorage = () => {
+      var user = localStorage.getItem('user');
+      var profilePictureVerif = localStorage.getItem('profilePicture');
+      if (user) {
+        var userObject = JSON.parse(user);
+        setName(userObject.name || '');
+        setUsername(userObject.firstname || '');
+      }
+      if (profilePictureVerif) {
+        setProfilePicture(profilePictureVerif);
+      }
+    }
+    updateUserFromLocalStorage();
+
+    const intervalId = setInterval(() => {
+      updateUserFromLocalStorage();
+    }, 1000); // Vérifie chaque seconde
+
+    // Nettoyer l'intervalle lors du démontage du composant
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [])
+  const location = useLocation();
+  const navigate = useNavigate(); 
+    const onDisconnect = () => {
     localStorage.removeItem('user');
     navigate('/login');
   }
@@ -27,10 +55,10 @@ function LeftMenu() {
       <div className="w-[200px] h-full bg-black flex flex-col items-center justify-between py-10 drop-shadow-lg rounded-lg px-5">
         <div className="flex flex-col gap-3 items-center">
           <div className="w-24 h-24 rounded-full bg-white overflow-hidden">
-            <img src="/radu.png" className="w-full h-full" />
+            <img src={profilePicture} className="w-full h-full" />
           </div>
           <div>
-            <p className="font-bold text-lg">Jean Dupont</p>
+            <p className="font-bold text-lg">{name} {username}</p>
           </div>
         </div>
         <div className="flex flex-col gap-5 mb-40 w-full">
