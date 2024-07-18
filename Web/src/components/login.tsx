@@ -9,15 +9,17 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState<string>('');
     const [rememberMe, setRememberMe] = useState<boolean>(false);
     const navigate = useNavigate();
+    const profilePictureVerif = localStorage.getItem('profilePicture');
 
     const handleEmailLogin = async () => {
         try {
             await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
                 const user = userCredential.user;
-                console.log('uid', user.uid);
-                console.log('email', user.email);
                 axios.get(`http://localhost:3000/api/users/firebase/${user.uid}`).then((response) => {
                     if (response.data) {
+                        if (!profilePictureVerif) {
+                            localStorage.setItem('profilePicture', '/radu.png');
+                        }
                         localStorage.setItem('user', JSON.stringify(response.data));
                         navigate('/')
                     }
@@ -26,8 +28,6 @@ const Login: React.FC = () => {
                     alert((error as Error).message);
                 });
             });
-            console.log('Logged in successfully!');
-            navigate('/');
         } catch (error) {
             console.error('Error logging in:', error);
             alert((error as Error).message);
@@ -36,9 +36,21 @@ const Login: React.FC = () => {
 
     const handleGoogleLogin = async () => {
         try {
-            await signInWithPopup(auth, googleProvider);
-            console.log('Logged in successfully with Google!');
-            navigate('/');
+            await signInWithPopup(auth, googleProvider).then((userCredential) => {
+                const user = userCredential.user;
+                axios.get(`http://localhost:3000/api/users/firebase/${user.uid}`).then((response) => {
+                    if (response.data) {
+                        if (!profilePictureVerif) {
+                            localStorage.setItem('profilePicture', '/radu.png');
+                        }
+                        localStorage.setItem('user', JSON.stringify(response.data));
+                        navigate('/')
+                    }
+                }).catch((error) => {
+                    console.error('Error fetching properties:', error);
+                    alert((error as Error).message);
+                });
+            });
         } catch (error) {
             console.error('Error logging in with Google:', error);
             alert((error as Error).message);

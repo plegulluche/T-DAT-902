@@ -22,6 +22,7 @@ const Register: React.FC = () => {
                     firebase_id: user.uid,
                     email: user.email,
                 }).then((response) => {
+                    localStorage.setItem('profilePicture', '/radu.png');
                     localStorage.setItem('user', JSON.stringify(response.data));
                     navigate('/');
                 }).catch((error) => {
@@ -37,10 +38,21 @@ const Register: React.FC = () => {
 
     const handleGoogleSignUp = async () => {
         try {
-            await signInWithPopup(auth, googleProvider);
-            console.log('Signed up successfully with Google!');
-            navigate('/');
-        } catch (error) {
+            await signInWithPopup(auth, googleProvider).then((userCredential) => {
+                const user = userCredential.user;
+                axios.post('http://localhost:3000/api/users', {
+                    firebase_id: user.uid,
+                    email: user.email,
+                }).then((response) => {
+                    localStorage.setItem('profilePicture', '/radu.png');
+                    localStorage.setItem('user', JSON.stringify(response.data));
+                    navigate('/');
+                }).catch((error) => {
+                    console.error('Error registering:', error);
+                    alert((error as Error).message);
+                });
+        });
+    } catch (error) {
             console.error('Error signing up with Google:', error);
             alert((error as Error).message);
         }
