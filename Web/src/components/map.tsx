@@ -5,6 +5,7 @@ import Chart from "./chart";
 import axios from "axios";
 import Header from "./header";
 import M2Price from "./m2Price";
+import Spinner from "./spinner";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWF0aGlldWJsYWlzIiwiYSI6ImNrZjZneDRmdDB3bG4yeHA5ZHN5NDNsYm0ifQ.0-ZZSb86hkNjwGqMJEiF2Q';
 
@@ -35,7 +36,8 @@ const Map: React.FC = () => {
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [label, setLabel] = useState<string>();
   const [data, setData] = useState<any>([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [asChange, setAsChange] = useState(false);
 
   useEffect(() => {
     axios.get(`http://localhost:3000/api/squaremeteraverages/year/2023`).then((response) => {
@@ -62,7 +64,7 @@ const Map: React.FC = () => {
       });
     }
     }
-  }, [selectedDepartmentId]);
+  }, [selectedDepartmentId, asChange]);
 
   useEffect(() => {
     if (selectedCity) {
@@ -84,7 +86,7 @@ const Map: React.FC = () => {
       });
     }
     }
-  }, [selectedCity]);
+  }, [selectedCity, asChange]);
 
   useEffect(() => {
     if (mapContainerRef.current) {
@@ -258,7 +260,7 @@ const Map: React.FC = () => {
   return (
     <div>
       <div className="bg-white rounded-lg p-5 flex flex-col border-2 border-gray-200" style={{height: '95dvh'}}>
-        <Header label={label}/>
+        <Header label={label} onChange={() => setAsChange(!asChange)}/>
         <div className="h-full flex gap-6 overflow-hidden">
           <div ref={mapContainerRef} className="rounded-md border-2 border-gray-200 overflow-hidden w-2/3" style={{  height: '100%' }}/>
           <div className="w-1/3 rounded-lg flex flex-col gap-5">
@@ -266,7 +268,7 @@ const Map: React.FC = () => {
               <p className="text-black/80 font-semibold text-sm">Price evolution on {label}</p>
               {loading ? 
                 <div className="h-full flex items-center justify-center w-full text-black">
-                  loading...
+                  <Spinner />
                 </div>
               :
               <Chart data={data?.priceEvolution}/>}
@@ -275,7 +277,7 @@ const Map: React.FC = () => {
               <p className="text-black/80 font-semibold text-sm">Recent sales on {label}</p>
               {loading ? 
                 <div className="h-full flex items-center justify-center w-full text-black">
-                  loading...
+                  <Spinner />
                 </div>
               :
               <div className="h-full">

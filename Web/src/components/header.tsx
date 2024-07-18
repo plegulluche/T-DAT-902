@@ -18,20 +18,20 @@ function CountCard2(props: { count: string, onClick: () => void, selected: strin
 }
 
 
-export default function Header(props: {label: string | undefined}) {
+export default function Header(props: {label: string | undefined, onChange: () => void}) {
     const [household, setHousehold] = useState<any>(localStorage.getItem('household'));
     const [budget, setBudget] = useState<any>(localStorage.getItem('budget'))
 
    const onChange = (value: string) => {
         localStorage.setItem("household", value);
         setHousehold(value);
-        window.location.reload();
+        props.onChange()
     }
 
     const onChangeBudget = (value: string) => {
         localStorage.setItem("budget", value);
         setBudget(value);
-        window.location.reload();
+        props.onChange()
     }
 
     const [open1, setOpen1] = useState<boolean>(false);
