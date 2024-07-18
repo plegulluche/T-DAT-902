@@ -323,7 +323,7 @@ const Map: React.FC = () => {
                   <Spinner />
                 </div>
               :
-              <div className="h-full">
+              <div className="h-full pb-10">
                 <RecentSales data={data?.lastSales} label={label}/>
               </div>}
             </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Coins, Group, MapPin } from 'iconoir-react';
 
 interface Search {
   roomMin: number;
@@ -69,9 +70,9 @@ const Profile: React.FC = () => {
     };
   
     return (
-      <div className="min-h-screen p-5 flex flex-col items-center">
+      <div className="p-5 flex flex items-start justify-center gap-6">
         <div className="bg-white rounded-lg border-2 border-gray-200 p-5 w-full max-w-lg mb-4">
-          <h2 className="text-xl font-semibold mb-4 text-black">Profile</h2>
+          <h2 className="text-xl font-semibold mb-2 text-black">Profile</h2>
           <form onSubmit={handleProfileUpdate} className="space-y-6">
             <div className="">
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
@@ -109,14 +110,23 @@ const Profile: React.FC = () => {
             <button type="submit" className="w-full bg-black text-white py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Update Profile</button>
           </form>
         </div>
-        <div className="bg-white rounded-lg rounded-lg border-2 border-gray-200 p-5 w-full max-w-lg">
-          <h2 className="text-xl font-semibold mb-6 text-black">Search History</h2>
+        <div className="bg-white rounded-lg border-2 border-gray-200 p-5 w-full max-w-lg max-h-[500px] h-fit overflow-y-auto">
+          <h2 className="text-xl font-semibold mb-4 text-black">Search History</h2>
           <ul className="space-y-2">
           {searchHistory?.map((search, index) => (
-            <li key={index} className="text-gray-700">
-              <p>Nombre de chambres : {search.roomMin} - {search.roomMax}</p>
-              <p>Prix : {search.priceMin}€ - {search.priceMax}€</p>
-              <p>Département: {search.department}</p>
+            <li key={index} className="text-gray-700 rounded-lg border border-gray-300 p-2">
+              <div className="h-full py-1 px-3 flex gap-2 items-cente w-fit">
+                <Group width={16} height={16} strokeWidth={2} />
+                <p className="text-sm">{search.roomMin}-{search.roomMax} rooms</p>
+              </div>
+              <div className="h-full py-1 px-3 flex gap-2 items-cente w-fit">
+                <Coins width={16} height={16} strokeWidth={2} />
+                <p className="text-sm">{search.priceMin}€ - {search.priceMax}€</p>
+              </div>
+              <div className="h-full py-1 px-3 flex gap-2 items-cente w-fit">
+                <MapPin width={16} height={16} strokeWidth={2} />
+                <p className="text-sm">{search.department}</p>
+              </div>
             </li>
           ))}
           </ul>
