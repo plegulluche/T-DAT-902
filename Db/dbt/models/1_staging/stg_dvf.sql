@@ -11,9 +11,19 @@ WITH source_data AS (
         "Code voie" AS Code_voie,
         "Voie" AS Voie,
         "Code postal" AS Code_postal,
-        "Commune" AS Commune,
+        CASE 
+            WHEN "Commune" like '%MARSEILLE%' THEN 'MARSEILLE'
+            WHEN "Commune" like '%PARIS%' THEN 'PARIS'
+            WHEN "Commune" like '%LYON%' THEN 'LYON'
+            ELSE "Commune"       
+        END AS Commune,
         "Code departement" AS Code_departement,
-        "Code commune" AS Code_commune,
+        CASE 
+            WHEN "Commune" like '%MARSEILLE%' THEN '055'
+            WHEN "Commune" like '%PARIS%' THEN '056'
+            WHEN "Commune" like '%LYON%' THEN '123'
+            ELSE "Code commune"
+        END AS Code_commune,
         "Prefixe de section" AS Prefixe_de_section,
         "Section" AS Section,
         CAST("No plan" AS INTEGER) AS No_plan,
