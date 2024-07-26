@@ -91,5 +91,8 @@ router.put('/:id', (req, res) => userController.updateUser(req, res))
  *         description: Erreur serveur
  */
 router.get('/:id', (req, res) => userController.getUserById(req, res))
+router.get('/firebase/:id', (req, res) =>
+  userController.getUserByIdFirebase(req, res)
+)
 
 export default router
