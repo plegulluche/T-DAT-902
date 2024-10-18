@@ -20,3 +20,20 @@ This project is a data-driven application that retrieves, analyzes, and visualiz
     Real-time Data Processing: A future enhancement would be to implement real-time data processing to provide users with the latest market trends as they happen.
 
 ## 🖼️ Screenshots
+
+![Screenshot 2024-10-18 164020](https://github.com/user-attachments/assets/ad929be0-1b82-40f4-9410-9987083e35a4)
+
+
+## 📊 Data Pipeline
+
+    Data is collected, transformed, and loaded into the database using dbt.
+    Prisma ORM is used to manage database operations.
+    The frontend fetches the processed data through the Express API.
+
+## 🤝 Contributing
+
+Feel free to submit issues or pull requests if you'd like to improve this project!
+
+## 📄 License
+
+MIT License
